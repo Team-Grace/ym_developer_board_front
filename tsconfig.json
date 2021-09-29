@@ -12,7 +12,15 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths":{
+      "components/*":["components/*"],
+      "config/*":["config/*"],
+      "pages/*":["pages/*"],
+      "styles/*":["styles/*"],
+      "redux/*":["redux/*"],
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

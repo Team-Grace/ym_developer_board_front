@@ -1,0 +1,52 @@
+export const color = {
+  black: '#000000',
+  white: "#fff",
+  gray: {
+    900: "#2D2D2D",
+    800: "#3D3D3D",
+    700: "#555555",
+    600: "#6F6F6F",
+    500: "#7F7F7F",
+    400: "#A5A5A5",
+    300: "#CFCFCF",
+    200: "#DFDFDF",
+    100: "#EDEDED",
+    50: "#F8F8F8",
+  },
+  main: {
+    500: "#011d49",
+    400: "#063b8f",
+    300: "#0652c9",
+    200: "#4686eb",
+    100: "#a6c8ff",
+  },
+  warning: {
+    color: "#F29826",
+    dark: "#C7771C",
+    darkText: "#663D0A",
+  },
+  info: {
+    color: "#3C96F3",
+    dark: "#2E79D0",
+    darkText: "#143D61",
+  },
+  error: {
+    color: "#EC4236",
+    dark: "#E4240D",
+    darkText: "#621B16",
+  },
+  success: {
+    color: "#4FAF50",
+    dark: "#3B873D",
+    darkText: "#1E4620",
+  },
+  yellow: "#F9CD5F",
+  orange: "#F5961D",
+  bluegreen: "#2AA5AD",
+  darkbluegreen: "#51949D",
+  blue: "#80D2E4",
+  darkblue: "#5898E3",
+  pink: "#EE7C6C",
+  purple: "#A77FBF",
+
+}
