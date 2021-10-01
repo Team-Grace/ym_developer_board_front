@@ -4,21 +4,18 @@ import { ColumnContainer } from './style';
 
 interface Props {
   children?: React.ReactNode;
-  className?: string;
   title?: string; 
 }
-const Column = ({ children, className, title}: Props) => { 
-  const [{ canDrop, isOver}, drop] = useDrop({
+const Column = ({ children, title}: Props) => { 
+  const [, drop] = useDrop({
     accept: "Box",
-    drop: () => ({ name: "Some name" }),
+    drop: () => ({ name: title }),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     })
   });
 
-  console.log('options', {canDrop, isOver});
-  
   return (
     <ColumnContainer ref={drop}>
       {title}

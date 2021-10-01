@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from "react";
 import { useDrag } from 'react-dnd';
 import { MovableContainter } from './style';
 
-const MovableItem = () => {
+interface Props {
+  setIsFirstColumn: Dispatch<SetStateAction<boolean>>;
+}
+
+interface DropResult {
+  dropEffect: string;
+  name: string;
+}
+
+const MovableItem = ({ setIsFirstColumn }: Props) => {
   const [{ isDragging }, drag] = useDrag({
     type: 'Box',
+    end: (item, monitor) => {
+      const dropResult: null | DropResult = monitor.getDropResult();
+      if (dropResult && dropResult.name === 'Todo') {
+        setIsFirstColumn(true);
+      } else {
+        setIsFirstColumn(false);
+      }
+    },
     collect: (monitor) => ({
         isDragging: monitor.isDragging(),
     }),
