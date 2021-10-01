@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Column = styled.div`
+export const ColumnContainer = styled.div`
   height: 400px;
   width: 200px;
   margin: 20px;
