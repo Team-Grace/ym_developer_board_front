@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   return (
     <Container>
       <ProjectBoard />
-      <Example />
+      {/* <Example /> */}
     </Container>
   )
 }

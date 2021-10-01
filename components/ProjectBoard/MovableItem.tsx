@@ -1,9 +1,13 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { useDrag } from 'react-dnd';
+import React, { Dispatch, SetStateAction, useRef } from "react";
+import { useDrag, useDrop } from 'react-dnd';
 import { MovableContainter } from './style';
 
 interface Props {
-  setIsFirstColumn: Dispatch<SetStateAction<boolean>>;
+  name: string;
+  index: number;
+  columnName: string;
+  changeItemColumn: (currentItem: any, prevColumnName:any, columnName: any) => void;
+  moveCardHandler: (item:any, columnName:any, dragIndex:any, hoverIndex:any) => void;
 }
 
 interface DropResult {
@@ -11,15 +15,48 @@ interface DropResult {
   name: string;
 }
 
-const MovableItem = ({ setIsFirstColumn }: Props) => {
+const MovableItem = ({ name, index, columnName, changeItemColumn, moveCardHandler }: Props) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [, drop] = useDrop({
+    accept: 'Box',
+    hover(item:any, monitor:any) {
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      if (!ref.current) return;
+      if (dragIndex === hoverIndex) return;
+      
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const direction = (dragIndex < hoverIndex)? "down" : "up";
+
+      if (direction === "down" && hoverClientY < hoverMiddleY) {
+        return;
+      }
+      if (direction === "up" && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      moveCardHandler(item, columnName, dragIndex, hoverIndex);
+      item.index = hoverIndex;
+  },
+  });
   const [{ isDragging }, drag] = useDrag({
     type: 'Box',
+    item: {index, name, type: 'Box' },
     end: (item, monitor) => {
       const dropResult: null | DropResult = monitor.getDropResult();
-      if (dropResult && dropResult.name === 'Todo') {
-        setIsFirstColumn(true);
-      } else {
-        setIsFirstColumn(false);
+
+      if (dropResult) {
+        if(dropResult.name === 'Todo') {
+          changeItemColumn(item, columnName, 'Todo');
+        } else if(dropResult.name === 'InProgress') {
+          changeItemColumn(item, columnName, 'InProgress');
+        } else if(dropResult.name === 'Done') {
+          changeItemColumn(item, columnName, 'Done');
+        }
       }
     },
     collect: (monitor) => ({
@@ -29,9 +66,10 @@ const MovableItem = ({ setIsFirstColumn }: Props) => {
 
   const opacity = isDragging ? 0.4 : 1;
 
+  drag(drop(ref))
   return (
-    <MovableContainter ref={drag} style={{opacity}}>
-      We will move this item
+    <MovableContainter ref={ref} style={{opacity}}>
+      {name}
     </MovableContainter>
   );
 };

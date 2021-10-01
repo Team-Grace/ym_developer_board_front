@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDrop } from 'react-dnd';
-import { ColumnContainer } from './style';
+import { ColumnContainer, ColumnTitleContainer } from './style';
 
 interface Props {
   children?: React.ReactNode;
@@ -18,7 +18,9 @@ const Column = ({ children, title}: Props) => {
 
   return (
     <ColumnContainer ref={drop}>
-      {title}
+      <ColumnTitleContainer>
+        <h5>{title}</h5>
+      </ColumnTitleContainer>
       {children}
     </ColumnContainer>
   );
