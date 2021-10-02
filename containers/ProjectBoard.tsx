@@ -1,114 +1,103 @@
-
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Column from 'components/ProjectBoard/Column';
 import MovableItem from 'components/ProjectBoard/MovableItem';
 import _ from 'lodash';
+import { COLUMN_NAMES } from 'utils/Item';
+import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
 
-interface CurrentItem {
-  index: number;
-  name: string;
-  type: string;
-}
-
-interface itemProps {
-  id: number;
-  name: string;
-  column: string;
-}
-
-enum COLUMN_NAMES {
-  DO_IT = 'DO it',
-  IN_PROGRESS = 'In Porgress',
-  DONE = 'DONE'
-} 
 const ProjectBoard = () => {
-  const [example, setExample] = useState<any>({
-    Todo: [
-      {id: 1, name: 'Item 1'},
-      {id: 2, name: 'Item 2'},
-      {id: 8, name: 'Item 8'},
+  const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
+  const [tasks, setTasks] = useState<any>({
+    [TODO]: [
+      {id: 1, value: '리액트하기'},
+      {id: 2, value: '투두리스트만들기'},
+      {id: 8, value: '드래그앤드랍만들기'},
     ],
-    InProgress: [
-      {id: 3, name: 'Item 3'},
-      {id: 4, name: 'Item 4'},
+    [IN_PROGRESS]: [
+      {id: 3, value: '밥먹기'},
+      {id: 4, value: '잠자기'},
     ],
-    Done: [
-      {id: 5, name: 'Item 5'},
-      {id: 6, name: 'Item 6'},
-      {id: 7, name: 'Item 7'},
-      {id: 9, name: 'Item 9'},
-      {id: 10, name: 'Item 10'},
-      {id: 11, name: 'Item 11'},
-    ]
+    [DONE]: []
   });
 
-  const tasks = [
-    {id: 1, name: 'Item 1', column: COLUMN_NAMES.DO_IT},
-    {id: 2, name: 'Item 2', column: COLUMN_NAMES.DO_IT},
-    {id: 3, name: 'Item 3', column: COLUMN_NAMES.DO_IT}
-  ]
+  const moveCardHandler = useCallback((
+    currentItem:CurrentItem, 
+    columnName:string, 
+    dragIndex: number, 
+    hoverIndex: number
+  ) => {
+    const dragItem = tasks[columnName][dragIndex];
+    const selectCoppiedObject = tasks[columnName];
 
-  const moveCardHandler = useCallback((item:any, columnName:any, dragIndex:any, hoverIndex:any) => {
-    const coppiedObject = _.cloneDeep(example);
-    const dragItem = coppiedObject[columnName][dragIndex];
-    const selectCoppiedObject = coppiedObject[columnName];
+    let prevSelectKey = "";
 
-    if (dragItem) {
+    Object.keys(tasks).forEach(key => {
+      tasks[key].forEach((el: itemProps) => {
+        el.id === currentItem.id && (prevSelectKey = key);
+      });
+    });
+
+    if (dragItem && prevSelectKey === columnName) {
       const prevItem = selectCoppiedObject.splice(hoverIndex, 1, dragItem);
       selectCoppiedObject.splice(dragIndex, 1, prevItem[0]);
 
-      setExample({
-        ...example,
+      setTasks({
+        ...tasks,
         [columnName]: selectCoppiedObject
       });
     }
-  }, [example]);
+  }, [tasks]);
 
-  const changeItemColumn = useCallback((currentItem: CurrentItem, prevColumnName: string, columnName: string) => {
-    const coppiedObject = _.cloneDeep(example);
-    const selectCoppiedObject = example[prevColumnName];
+  const changeItemColumn = useCallback((
+    currentItem: CurrentItem, 
+    prevColumnName: string, 
+    columnName: string
+  ) => {
+    const coppiedObject = _.cloneDeep(tasks);
+    const selectCoppiedObject = tasks[prevColumnName];
 
     if (prevColumnName !== columnName) {
-      const deleteSelectList = selectCoppiedObject.filter((el:any) => el.name !== currentItem.name);
-      const selectList = selectCoppiedObject.filter((el:any) => el.name === currentItem.name)[0];
+      const deleteSelectList = selectCoppiedObject.filter((el:itemProps) => el.id !== currentItem.id);
+      const selectList = selectCoppiedObject.filter((el:itemProps) => el.id === currentItem.id)[0];
 
       coppiedObject[columnName] = [...coppiedObject[columnName], selectList]
       coppiedObject[prevColumnName] = [...deleteSelectList];
     };
 
-    setExample(coppiedObject);
-  }, [example]);
+    setTasks(coppiedObject);
+  }, [tasks]);
 
   const returnItemsForColumn = useCallback((columnName: string) => {
-    if(example[columnName]) {
+    if(tasks[columnName]) {
       return (
-        example[columnName].map((item:itemProps, index:number) => (
-            <MovableItem 
-              key={item.id} 
-              name={item.name} 
-              index={index}
-              changeItemColumn={changeItemColumn}
-              moveCardHandler={moveCardHandler}
-              columnName={columnName}
-            />
-          ))
+        tasks[columnName].map((item: itemProps, index: number) => (
+          <MovableItem 
+            key={item.id}
+            id={item.id}
+            value={item.value} 
+            index={index}
+            changeItemColumn={changeItemColumn}
+            moveCardHandler={moveCardHandler}
+            columnName={columnName}
+          />
+        ))
       );
     }
-  }, [example]);
+  }, [tasks]);
 
   return (
     <>
       <DndProvider backend={HTML5Backend}>
-        <Column title="Todo">
-          {returnItemsForColumn('Todo')}
+        <Column title={TODO}>
+          {returnItemsForColumn(TODO)}
         </Column>
-        <Column title="InProgress">
-          {returnItemsForColumn('InProgress')}
+        <Column title={IN_PROGRESS}>
+          {returnItemsForColumn(IN_PROGRESS)}
         </Column>
-        <Column title="Done">
-          {returnItemsForColumn('Done')}
+        <Column title={DONE}>
+          {returnItemsForColumn(DONE)}
         </Column>
       </DndProvider>
     </>

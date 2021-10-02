@@ -10,7 +10,7 @@ export const ColumnContainer = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   background-color: #afafaf;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 export const MovableContainter = styled.div`

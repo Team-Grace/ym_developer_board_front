@@ -1,25 +1,33 @@
-import React, { Dispatch, SetStateAction, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
+import { COLUMN_NAMES } from 'utils/Item';
 import { useDrag, useDrop } from 'react-dnd';
 import { MovableContainter } from './style';
+import { CurrentItem, DropResult } from 'types/projectBoard/projectBoard';
 
 interface Props {
-  name: string;
+  value: string;
+  id: number;
   index: number;
   columnName: string;
-  changeItemColumn: (currentItem: any, prevColumnName:any, columnName: any) => void;
-  moveCardHandler: (item:any, columnName:any, dragIndex:any, hoverIndex:any) => void;
+  changeItemColumn: (
+    currentItem: CurrentItem, 
+    prevColumnName: string, 
+    columnName: string
+  ) => void;
+  moveCardHandler: (
+    currentItem: CurrentItem, 
+    columnName: string, 
+    dragIndex: number, 
+    hoverIndex: number
+  ) => void;
 }
 
-interface DropResult {
-  dropEffect: string;
-  name: string;
-}
-
-const MovableItem = ({ name, index, columnName, changeItemColumn, moveCardHandler }: Props) => {
+const MovableItem = ({ value, id, index, columnName, changeItemColumn, moveCardHandler }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [, drop] = useDrop({
     accept: 'Box',
     hover(item:any, monitor:any) {
+
       const dragIndex = item.index;
       const hoverIndex = index;
 
@@ -46,17 +54,25 @@ const MovableItem = ({ name, index, columnName, changeItemColumn, moveCardHandle
 
   const [{ isDragging }, drag] = useDrag({
     type: 'Box',
-    item: {index, name, type: 'Box' },
+    item: { index, value, id, type: 'Box' },
     end: (item, monitor) => {
       const dropResult: null | DropResult = monitor.getDropResult();
-
       if (dropResult) {
-        if(dropResult.name === 'Todo') {
-          changeItemColumn(item, columnName, 'Todo');
-        } else if(dropResult.name === 'InProgress') {
-          changeItemColumn(item, columnName, 'InProgress');
-        } else if(dropResult.name === 'Done') {
-          changeItemColumn(item, columnName, 'Done');
+        const { name } = dropResult;
+        const { TODO, IN_PROGRESS, DONE } = COLUMN_NAMES;
+
+        switch(name) {
+          case TODO:
+            changeItemColumn(item, columnName, TODO);
+            break;
+          case IN_PROGRESS:
+            changeItemColumn(item, columnName, IN_PROGRESS);
+            break;
+          case DONE:
+            changeItemColumn(item, columnName, DONE);
+            break;
+          default:
+            break;
         }
       }
     },
@@ -65,12 +81,15 @@ const MovableItem = ({ name, index, columnName, changeItemColumn, moveCardHandle
     }),
   });
 
-  const opacity = isDragging ? 0.4 : 1;
+  const opacity = useMemo(() => {
+    return isDragging ? 0.4 : 1
+  }, [isDragging]);
 
-  drag(drop(ref))
+  drag(drop(ref));
+
   return (
     <MovableContainter ref={ref} style={{opacity}}>
-      {name}
+      {value}
     </MovableContainter>
   );
 };

@@ -16,10 +16,13 @@
     "baseUrl": ".",
     "paths":{
       "components/*":["components/*"],
+      "containers/*":["containers/*"],
       "config/*":["config/*"],
       "pages/*":["pages/*"],
       "styles/*":["styles/*"],
       "redux/*":["redux/*"],
+      "utils/*":["utils/*"],
+      "types/*":["types/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

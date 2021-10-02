@@ -8,5 +8,5 @@ export const Container = styled.div`
   min-width: 768px;
   border: 1px solid ${color.main[500]};
   border-radius: 16px;
-  padding: 40px;
+  padding: 100px;
 `;

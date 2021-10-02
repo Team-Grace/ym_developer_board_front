@@ -3,9 +3,10 @@ import { useDrop } from 'react-dnd';
 import { ColumnContainer, ColumnTitleContainer } from './style';
 
 interface Props {
-  children?: React.ReactNode;
-  title?: string; 
+  children: React.ReactNode;
+  title: string; 
 }
+
 const Column = ({ children, title}: Props) => { 
   const [, drop] = useDrop({
     accept: "Box",
