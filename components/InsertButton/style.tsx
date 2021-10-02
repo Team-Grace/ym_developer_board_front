@@ -8,7 +8,6 @@ export const ButtonIcon = styled.button`
   right: 0;
   top: 0;
   border: none;
-  /* border-radius: 50%; */
   background-color: ${color.main[500]};
   color: white;
   font-size: 40px;
@@ -17,8 +16,8 @@ export const ButtonIcon = styled.button`
   transition: width 0.2s;
 
   &:hover {
-    opacity: 0.9;
-    width: 5%;
+    opacity: 0.8;
+    width: 6%;
   }
 
   svg {

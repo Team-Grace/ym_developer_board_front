@@ -1,9 +1,13 @@
 import React from 'react';
 import { ButtonIcon } from './style';
 
-const InsertButton = () => {
+interface Props {
+  onClick: () => void;
+}
+
+const InsertButton = ({ onClick }: Props) => {
   return (
-    <ButtonIcon>
+    <ButtonIcon onClick={onClick}>
       +
     </ButtonIcon>
   )

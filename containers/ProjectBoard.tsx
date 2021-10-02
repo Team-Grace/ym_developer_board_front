@@ -9,6 +9,7 @@ import { COLUMN_NAMES } from 'utils/Item';
 import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
 import { InnerContainer } from 'styles/_common';
 import InsertButton from 'components/InsertButton';
+import InsertMenu from 'components/ProjectBoard/InsertMenu';
 
 const ProjectBoard = () => {
   const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
@@ -24,6 +25,7 @@ const ProjectBoard = () => {
     ],
     [DONE]: []
   });
+  const [isOpenInsertMenu, setIsOpenInsertMenu] = useState(false);
 
   const isMobile = useMemo(() => {
     return window.innerWidth < 600;
@@ -105,7 +107,6 @@ const ProjectBoard = () => {
     }
   }, [tasks]);
 
-
   return (
     <>
       <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
@@ -119,7 +120,11 @@ const ProjectBoard = () => {
           <Column title={DONE} length={tasks[DONE].length}>
             {returnItemsForColumn(DONE)}
           </Column>
-          <InsertButton />
+          <InsertButton onClick={() => setIsOpenInsertMenu(true)} />
+
+          
+          <InsertMenu isOpenInsertMenu={isOpenInsertMenu} onCancel={() => setIsOpenInsertMenu(false)} />
+
         </InnerContainer>
       </DndProvider>
     </>
