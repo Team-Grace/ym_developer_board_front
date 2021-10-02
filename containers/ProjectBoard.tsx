@@ -87,10 +87,10 @@ const ProjectBoard = () => {
     const { name, value } = e.target
     setFormValues({
       ...formValues,
-      [name]: value
+      [name]: value.replaceAll("<br>", "\r\n")
     });
   }, [formValues]);
-
+  
   const onUpload = useCallback((e) => {
     e.preventDefault();
 
@@ -99,17 +99,13 @@ const ProjectBoard = () => {
     const temp = { ...formValues };
     temp.id = idRef.current;
 
-    setTasks({
-      ...tasks,
-      [TODO]: [...tasks[TODO], temp]
-    });
-
-    setFormValues({
-      ...formValues,
-      title: "",
-      desc: "",
-    })
-    setIsOpenUploadMenu(false);
+    if (onValidate()) {
+      setTasks({
+        ...tasks,
+        [TODO]: [...tasks[TODO], temp]
+      });
+      onReset();
+    } 
   }, [formValues]);
 
   const onRemove = (id: number, columnName: string) => {
@@ -118,6 +114,27 @@ const ProjectBoard = () => {
       [columnName]: tasks[columnName].filter((el: CurrentItem) => el.id !== id)
     })
   }
+
+  const onReset = useCallback(() => {
+    setFormValues({
+      ...formValues,
+      title: "",
+      desc: "",
+    })
+    setIsOpenUploadMenu(false);
+  }, []);
+
+  const onValidate = useCallback(() => {
+    const { title, desc } = formValues;
+    if (!title.length) {
+      alert("타이틀을 작성해주세요");
+      return false;
+    } else if (!desc.length) {
+      alert("설명을 작성해주세요");
+      return false;
+    }
+    return true;
+  }, [formValues]);
 
   const returnItemsForColumn = useCallback((columnName: string) => {
     if (tasks[columnName]) {

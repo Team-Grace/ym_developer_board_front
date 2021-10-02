@@ -107,7 +107,7 @@ const MovableItem = ({
           <button onClick={() => onRemove(id, columnName)}><FiDelete /></button>
         </div>
         <div className="desc-container">
-          {desc}
+          <p>{desc}</p>
         </div>
       </ItemContentContainer>
     </MovableContainter>
