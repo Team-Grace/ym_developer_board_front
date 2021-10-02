@@ -8,6 +8,7 @@ import { TouchBackend } from 'react-dnd-touch-backend';
 import { COLUMN_NAMES } from 'utils/Item';
 import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
 import { InnerContainer } from 'styles/_common';
+import InsertButton from 'components/InsertButton';
 
 const ProjectBoard = () => {
   const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
@@ -118,6 +119,7 @@ const ProjectBoard = () => {
           <Column title={DONE} length={tasks[DONE].length}>
             {returnItemsForColumn(DONE)}
           </Column>
+          <InsertButton />
         </InnerContainer>
       </DndProvider>
     </>
