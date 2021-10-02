@@ -1,9 +1,10 @@
 
-import React, {useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Column from 'components/ProjectBoard/Column';
 import MovableItem from 'components/ProjectBoard/MovableItem';
+import _ from 'lodash';
 
 interface CurrentItem {
   index: number;
@@ -17,63 +18,70 @@ interface itemProps {
   column: string;
 }
 
+enum COLUMN_NAMES {
+  DO_IT = 'DO it',
+  IN_PROGRESS = 'In Porgress',
+  DONE = 'DONE'
+} 
 const ProjectBoard = () => {
   const [example, setExample] = useState<any>({
     Todo: [
-      {id: 1, name: 'Item 1', column: 'Todo'},
-      {id: 2, name: 'Item 2', column: 'Todo'},
-      {id: 8, name: 'Item 8', column: 'Todo'},
+      {id: 1, name: 'Item 1'},
+      {id: 2, name: 'Item 2'},
+      {id: 8, name: 'Item 8'},
     ],
     InProgress: [
-      {id: 3, name: 'Item 3', column: 'InProgress'},
-      {id: 4, name: 'Item 4', column: 'InProgress'},
+      {id: 3, name: 'Item 3'},
+      {id: 4, name: 'Item 4'},
     ],
     Done: [
-      {id: 5, name: 'Item 5', column: 'Done'},
-      {id: 6, name: 'Item 6', column: 'Done'},
-      {id: 7, name: 'Item 7', column: 'Done'},
-      {id: 9, name: 'Item 9', column: 'Done'},
-      {id: 10, name: 'Item 10', column: 'Done'},
-      {id: 11, name: 'Item 11', column: 'Done'},
+      {id: 5, name: 'Item 5'},
+      {id: 6, name: 'Item 6'},
+      {id: 7, name: 'Item 7'},
+      {id: 9, name: 'Item 9'},
+      {id: 10, name: 'Item 10'},
+      {id: 11, name: 'Item 11'},
     ]
-  })
+  });
 
-  const moveCardHandler = (item:any, columnName:any, dragIndex:any, hoverIndex:any) => {
-    const dragItem = example[columnName][dragIndex];
-    const coppiedObject = {...example}
+  const tasks = [
+    {id: 1, name: 'Item 1', column: COLUMN_NAMES.DO_IT},
+    {id: 2, name: 'Item 2', column: COLUMN_NAMES.DO_IT},
+    {id: 3, name: 'Item 3', column: COLUMN_NAMES.DO_IT}
+  ]
+
+  const moveCardHandler = useCallback((item:any, columnName:any, dragIndex:any, hoverIndex:any) => {
+    const coppiedObject = _.cloneDeep(example);
+    const dragItem = coppiedObject[columnName][dragIndex];
     const selectCoppiedObject = coppiedObject[columnName];
-    const prevItem = selectCoppiedObject.splice(hoverIndex, 1, dragItem);
-    selectCoppiedObject.splice(dragIndex, 1, prevItem[0]);
 
-    setExample({
-      ...example,
-      coppiedObject
-    })
-  }
+    if (dragItem) {
+      const prevItem = selectCoppiedObject.splice(hoverIndex, 1, dragItem);
+      selectCoppiedObject.splice(dragIndex, 1, prevItem[0]);
 
-  const changeItemColumn = (currentItem: CurrentItem, prevColumnName: string, columnName: string) => {
-    setExample((prev: any) => {
-      const coppiedObject = {...prev};
-      const selectCoppiedObject = prev[prevColumnName];
+      setExample({
+        ...example,
+        [columnName]: selectCoppiedObject
+      });
+    }
+  }, [example]);
 
-      if (prevColumnName !== columnName) {
-        let selectList = selectCoppiedObject.filter((el:any) => el.name === currentItem.name)[0];
-        const deleteSelectList = selectCoppiedObject.filter((el:any) => el.name !== currentItem.name);
-  
-        selectList = {
-          ...selectList,
-          column: selectList.column === columnName ? prevColumnName : columnName
-        }
-        coppiedObject[columnName] = [...coppiedObject[columnName], selectList]
-        coppiedObject[prevColumnName] = [...deleteSelectList];
-      } else {
-        return prev;
-      }
-      return coppiedObject;
-    });
-  }
+  const changeItemColumn = useCallback((currentItem: CurrentItem, prevColumnName: string, columnName: string) => {
+    const coppiedObject = _.cloneDeep(example);
+    const selectCoppiedObject = example[prevColumnName];
 
-  const returnItemsForColumn = (columnName: string) => {
+    if (prevColumnName !== columnName) {
+      const deleteSelectList = selectCoppiedObject.filter((el:any) => el.name !== currentItem.name);
+      const selectList = selectCoppiedObject.filter((el:any) => el.name === currentItem.name)[0];
+
+      coppiedObject[columnName] = [...coppiedObject[columnName], selectList]
+      coppiedObject[prevColumnName] = [...deleteSelectList];
+    };
+
+    setExample(coppiedObject);
+  }, [example]);
+
+  const returnItemsForColumn = useCallback((columnName: string) => {
     if(example[columnName]) {
       return (
         example[columnName].map((item:itemProps, index:number) => (
@@ -88,7 +96,7 @@ const ProjectBoard = () => {
           ))
       );
     }
-  }
+  }, [example]);
 
   return (
     <>

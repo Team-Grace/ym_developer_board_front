@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const ColumnContainer = styled.div`
-  height: 400px;
-  width: 200px;
+  height: 500px;
+  width: 300px;
   margin: 20px;
   border-radius: 10px;
   box-shadow: 1px 1px 6px rgba(0,0,0,0.5);
@@ -16,8 +16,8 @@ export const ColumnContainer = styled.div`
 export const MovableContainter = styled.div`
   border-radius: 10px;
   background-color: #fff3f3;
-  height: 80px;
-  width: 170px;
+  min-height: 100px;
+  width: 250px;
   margin: 10px auto;
   display: flex;
   justify-content: center;

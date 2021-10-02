@@ -43,6 +43,7 @@ const MovableItem = ({ name, index, columnName, changeItemColumn, moveCardHandle
       item.index = hoverIndex;
   },
   });
+
   const [{ isDragging }, drag] = useDrag({
     type: 'Box',
     item: {index, name, type: 'Box' },
