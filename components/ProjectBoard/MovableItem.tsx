@@ -82,7 +82,7 @@ const MovableItem = ({ value, id, index, columnName, changeItemColumn, moveCardH
   });
 
   const opacity = useMemo(() => {
-    return isDragging ? 0.4 : 1
+    return isDragging ? 0.6 : 1
   }, [isDragging]);
 
   drag(drop(ref));

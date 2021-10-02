@@ -5,8 +5,13 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   max-width: 1400px;
-  min-width: 768px;
+  min-width: 1024px;
   border: 1px solid ${color.main[500]};
-  border-radius: 16px;
   padding: 100px;
+`;
+
+export const InnerContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
 `;
