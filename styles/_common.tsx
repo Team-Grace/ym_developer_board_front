@@ -9,7 +9,7 @@ export const Container = styled.div`
   max-width: 1400px;
   min-width: 1024px;
   border: 1px solid ${color.gray[200]};
-  padding: 100px 120px;
+  padding: 80px 120px;
 `;
 
 export const InnerContainer = styled.div`

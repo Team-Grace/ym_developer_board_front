@@ -16,3 +16,9 @@ export interface CurrentItem {
   type: string;
   id: number;
 }
+
+export interface FormValuesProps {
+  id: number;
+  title: string;
+  desc: string;
+}

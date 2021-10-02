@@ -9,23 +9,26 @@ import { COLUMN_NAMES } from 'utils/Item';
 import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
 import { InnerContainer } from 'styles/_common';
 import InsertButton from 'components/InsertButton';
-import InsertMenu from 'components/ProjectBoard/InsertMenu';
+import UploadMenu from 'components/ProjectBoard/UploadMenu';
+
+const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
 
 const ProjectBoard = () => {
-  const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
+  const [isOpenUploadMenu, setIsOpenUploadMenu] = useState(false);
   const [tasks, setTasks] = useState<any>({
     [TODO]: [
-      {id: 1, title: '리액트하기', desc: '테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.'},
-      {id: 2, title: '투두리스트만들기', desc: '안녕하세요'},
-      {id: 3, title: '드래그앤드랍만들기', desc: '안녕하세요'},
+      {id: 1, title: '예제 타이틀', desc: '예제 설명입니다.'},
     ],
-    [IN_PROGRESS]: [
-      {id: 4, title: '밥먹기', desc: '안녕하세요'},
-      {id: 5, title: '잠자기', desc: '안녕하세요'},
-    ],
+    [IN_PROGRESS]: [],
     [DONE]: []
   });
-  const [isOpenInsertMenu, setIsOpenInsertMenu] = useState(false);
+  const [formValues, setFormValues] = useState({
+    id: 1,
+    title: "",
+    desc: "",
+  });
+
+  const idRef = useRef(1);
 
   const isMobile = useMemo(() => {
     return window.innerWidth < 600;
@@ -80,6 +83,35 @@ const ProjectBoard = () => {
     setTasks(coppiedObject);
   }, [tasks]);
 
+  const onChange = useCallback((e) => {
+    const { name, value } = e.target
+    setFormValues({
+      ...formValues,
+      [name]: value
+    });
+  }, [formValues]);
+
+  const onUpload = useCallback((e) => {
+    e.preventDefault();
+
+    idRef.current += 1;
+
+    const temp = { ...formValues };
+    temp.id = idRef.current;
+
+    setTasks({
+      ...tasks,
+      [TODO]: [...tasks[TODO], temp]
+    });
+
+    setFormValues({
+      ...formValues,
+      title: "",
+      desc: "",
+    })
+    setIsOpenUploadMenu(false);
+  }, [formValues]);
+
   const onRemove = (id: number, columnName: string) => {
     setTasks({
       ...tasks,
@@ -120,11 +152,15 @@ const ProjectBoard = () => {
           <Column title={DONE} length={tasks[DONE].length}>
             {returnItemsForColumn(DONE)}
           </Column>
-          <InsertButton onClick={() => setIsOpenInsertMenu(true)} />
 
-          
-          <InsertMenu isOpenInsertMenu={isOpenInsertMenu} onCancel={() => setIsOpenInsertMenu(false)} />
-
+          <InsertButton onClick={() => setIsOpenUploadMenu(true)} />
+          <UploadMenu 
+            formValues={formValues}
+            isOpenUploadMenu={isOpenUploadMenu} 
+            onCancel={() => setIsOpenUploadMenu(false)}
+            onChange={onChange}
+            onUpload={onUpload}
+          />
         </InnerContainer>
       </DndProvider>
     </>
