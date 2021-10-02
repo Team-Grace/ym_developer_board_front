@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState, useRef} from 'react';
 import Column from 'components/ProjectBoard/Column';
 import MovableItem from 'components/ProjectBoard/MovableItem';
 import _ from 'lodash';
@@ -13,13 +13,13 @@ const ProjectBoard = () => {
   const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
   const [tasks, setTasks] = useState<any>({
     [TODO]: [
-      {id: 1, value: '리액트하기'},
-      {id: 2, value: '투두리스트만들기'},
-      {id: 8, value: '드래그앤드랍만들기'},
+      {id: 1, title: '리액트하기', desc: '테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.테스트 desc입니다.'},
+      {id: 2, title: '투두리스트만들기', desc: '안녕하세요'},
+      {id: 3, title: '드래그앤드랍만들기', desc: '안녕하세요'},
     ],
     [IN_PROGRESS]: [
-      {id: 3, value: '밥먹기'},
-      {id: 4, value: '잠자기'},
+      {id: 4, title: '밥먹기', desc: '안녕하세요'},
+      {id: 5, title: '잠자기', desc: '안녕하세요'},
     ],
     [DONE]: []
   });
@@ -65,8 +65,10 @@ const ProjectBoard = () => {
     const selectCoppiedObject = tasks[prevColumnName];
 
     if (prevColumnName !== columnName) {
-      const deleteSelectList = selectCoppiedObject.filter((el:itemProps) => el.id !== currentItem.id);
-      const selectList = selectCoppiedObject.filter((el:itemProps) => el.id === currentItem.id)[0];
+      const deleteSelectList = selectCoppiedObject
+        .filter((el:itemProps) => el.id !== currentItem.id);
+      const selectList = selectCoppiedObject
+        .filter((el:itemProps) => el.id === currentItem.id)[0];
 
       coppiedObject[columnName] = [...coppiedObject[columnName], selectList]
       coppiedObject[prevColumnName] = [...deleteSelectList];
@@ -75,23 +77,33 @@ const ProjectBoard = () => {
     setTasks(coppiedObject);
   }, [tasks]);
 
+  const onRemove = (id: number, columnName: string) => {
+    setTasks({
+      ...tasks,
+      [columnName]: tasks[columnName].filter((el: CurrentItem) => el.id !== id)
+    })
+  }
+
   const returnItemsForColumn = useCallback((columnName: string) => {
     if (tasks[columnName]) {
       return (
         tasks[columnName].map((item: itemProps, index: number) => (
-          <MovableItem 
+          <MovableItem
             key={item.id}
             id={item.id}
-            value={item.value} 
+            title={item.title}
+            desc={item.desc} 
             index={index}
+            columnName={columnName}
             changeItemColumn={changeItemColumn}
             moveCardHandler={moveCardHandler}
-            columnName={columnName}
+            onRemove={onRemove}
           />
         ))
       );
     }
   }, [tasks]);
+
 
   return (
     <>
