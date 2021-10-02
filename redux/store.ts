@@ -4,13 +4,29 @@ import {
   Action,
 } from "@reduxjs/toolkit";
 import rootReducer from "./rootReducer";
-import { persistStore } from 'redux-persist';
+import { persistStore, persistReducer } from 'redux-persist';
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 const { logger } = require("redux-logger");
-const { persistReducer } = require('redux-persist');
-const storage = require('redux-persist/lib/storage').default;
 
 const env = process.env.NODE_ENV;
+
+const createNoopStorage = () => {
+  return {
+    getItem(_key:any) {
+      return Promise.resolve(null);
+    },
+    setItem(_key:any, value:any) {
+      return Promise.resolve(value);
+    },
+    removeItem(_key:any) {
+      return Promise.resolve();
+    },
+  };
+};
+
+const storage = typeof window !== "undefined" ? createWebStorage("local") : createNoopStorage();
+
 const persistConfig = {
   key: "root",
   storage,
@@ -20,9 +36,7 @@ const persistConfig = {
 
 const middleware = [];
 
-if (env === 'development') {
-  middleware.push(logger);
-}
+if (env === 'development') middleware.push(logger);
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 let store:any = configureStore({
