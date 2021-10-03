@@ -11,26 +11,20 @@ import { InnerContainer } from 'styles/_common';
 import UploadButton from 'components/UploadButton';
 import UploadMenu from 'components/ProjectBoard/UploadMenu';
 import { useDispatch, useSelector } from 'react-redux';
-import { uploadTodo, removeTodo, orderMoveItem, changeColumnItem } from 'redux/projectBoard';
+import projectBoard, { uploadTodo, removeTodo, orderMoveItem, changeColumnItem } from 'redux/projectBoard';
 import { RootState } from 'redux/store';
 
 const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
 
 const ProjectBoard = () => {
+  const tasks = useSelector((state:RootState) => state.projectBoard);
   const [isOpenUploadMenu, setIsOpenUploadMenu] = useState(false);
-  const prjectBoard = useSelector((state:RootState) => state.projectBoard);
   const [formValues, setFormValues] = useState({
     id: 0,
     title: "",
     desc: "",
   });
-
-  const idRef = useRef(0);
   const dispatch = useDispatch();
-
-  const isMobile = useMemo(() => {
-    return window.innerWidth < 600;
-  }, [])
 
   const moveCardHandler = useCallback((
     currentItem:CurrentItem, 
@@ -38,13 +32,13 @@ const ProjectBoard = () => {
     dragIndex: number, 
     hoverIndex: number
   ) => {
-    const dragItem = _.cloneDeep(prjectBoard[columnName][dragIndex]);
-    const selectCoppiedObject = _.cloneDeep(prjectBoard[columnName]);
+    const dragItem = _.cloneDeep(tasks[columnName][dragIndex]);
+    const selectCoppiedObject = _.cloneDeep(tasks[columnName]);
 
     let prevSelectKey = "";
 
-    Object.keys(prjectBoard).forEach(key => {
-      prjectBoard[key].forEach((el: itemProps) => {
+    Object.keys(tasks).forEach(key => {
+      tasks[key].forEach((el: itemProps) => {
         el.id === currentItem.id && (prevSelectKey = key);
       });
     });
@@ -58,14 +52,14 @@ const ProjectBoard = () => {
         selectObject :selectCoppiedObject,
       }));
     }
-  }, [prjectBoard, dispatch]);
+  }, [tasks, dispatch]);
 
   const changeItemColumn = useCallback((
     currentItem: CurrentItem, 
     prevColumnName: string, 
     columnName: string
   ) => {
-    const coppiedObject = _.cloneDeep(prjectBoard);
+    const coppiedObject = _.cloneDeep(tasks);
     const selectCoppiedObject = coppiedObject[prevColumnName];
 
     if (prevColumnName !== columnName) {
@@ -77,11 +71,9 @@ const ProjectBoard = () => {
       coppiedObject[columnName] = [...coppiedObject[columnName], selectList]
       coppiedObject[prevColumnName] = [...deleteSelectList];
 
-      console.log(coppiedObject);
-
       dispatch(changeColumnItem(coppiedObject));
     };
-  }, [prjectBoard, dispatch]);
+  }, [tasks, dispatch]);
 
   const onChange = useCallback((e) => {
     const { name, value } = e.target
@@ -94,10 +86,12 @@ const ProjectBoard = () => {
   const onUpload = useCallback((e) => {
     e.preventDefault();
 
-    idRef.current += 1;
-
     const temp = { ...formValues };
-    temp.id = idRef.current;
+
+    const allList = Object.keys(tasks).map(key => tasks[key]).flat().map(el => el.id);
+    const maxNum = allList.length > 0 ? Math.max(...allList) + 1 : 1;
+
+    temp.id = maxNum;
 
     if (onValidate()) {
       onReset();
@@ -131,9 +125,9 @@ const ProjectBoard = () => {
   }, [formValues]);
 
   const returnItemsForColumn = useCallback((columnName: string) => {
-    if (prjectBoard[columnName]) {
+    if (tasks[columnName]) {
       return (
-        prjectBoard[columnName].map((item: itemProps, index: number) => (
+        tasks[columnName].map((item: itemProps, index: number) => (
           <MovableItem
             key={item.id}
             id={item.id}
@@ -148,19 +142,19 @@ const ProjectBoard = () => {
         ))
       );
     }
-  }, [prjectBoard]);
+  }, [tasks]);
 
   return (
     <>
-      <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+      <DndProvider backend={HTML5Backend}>
         <InnerContainer>
-          <Column title={TODO} length={prjectBoard[TODO].length}>
+          <Column title={TODO} length={tasks[TODO].length}>
             {returnItemsForColumn(TODO)}
           </Column>
-          <Column title={IN_PROGRESS} length={prjectBoard[IN_PROGRESS].length}>
+          <Column title={IN_PROGRESS} length={tasks[IN_PROGRESS].length}>
             {returnItemsForColumn(IN_PROGRESS)}
           </Column>
-          <Column title={DONE} length={prjectBoard[DONE].length}>
+          <Column title={DONE} length={tasks[DONE].length}>
             {returnItemsForColumn(DONE)}
           </Column>
 
