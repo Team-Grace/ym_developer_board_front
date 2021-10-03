@@ -5,7 +5,7 @@ interface Props {
   onClick: () => void;
 }
 
-const InsertButton = ({ onClick }: Props) => {
+const UploadButton = ({ onClick }: Props) => {
   return (
     <ButtonIcon onClick={onClick}>
       +
@@ -13,4 +13,4 @@ const InsertButton = ({ onClick }: Props) => {
   )
 };
 
-export default InsertButton;
+export default UploadButton;
