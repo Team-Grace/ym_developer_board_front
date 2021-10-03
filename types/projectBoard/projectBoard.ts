@@ -5,14 +5,20 @@ export interface DropResult {
 
 export interface itemProps {
   index: number;
-  value: string;
+  title: string;
+  desc: string;
   type: string;
   id: number;
 }
 
 export interface CurrentItem {
   index: number;
-  value: string;
   type: string;
   id: number;
+}
+
+export interface FormValuesProps {
+  id: number;
+  title: string;
+  desc: string;
 }

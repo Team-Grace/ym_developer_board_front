@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState, useRef} from 'react';
 import Column from 'components/ProjectBoard/Column';
 import MovableItem from 'components/ProjectBoard/MovableItem';
 import _ from 'lodash';
@@ -8,21 +8,27 @@ import { TouchBackend } from 'react-dnd-touch-backend';
 import { COLUMN_NAMES } from 'utils/Item';
 import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
 import { InnerContainer } from 'styles/_common';
+import InsertButton from 'components/InsertButton';
+import UploadMenu from 'components/ProjectBoard/UploadMenu';
+
+const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
 
 const ProjectBoard = () => {
-  const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
+  const [isOpenUploadMenu, setIsOpenUploadMenu] = useState(false);
   const [tasks, setTasks] = useState<any>({
     [TODO]: [
-      {id: 1, value: '리액트하기'},
-      {id: 2, value: '투두리스트만들기'},
-      {id: 8, value: '드래그앤드랍만들기'},
+      {id: 1, title: '예제 타이틀', desc: '예제 설명입니다.'},
     ],
-    [IN_PROGRESS]: [
-      {id: 3, value: '밥먹기'},
-      {id: 4, value: '잠자기'},
-    ],
+    [IN_PROGRESS]: [],
     [DONE]: []
   });
+  const [formValues, setFormValues] = useState({
+    id: 1,
+    title: "",
+    desc: "",
+  });
+
+  const idRef = useRef(1);
 
   const isMobile = useMemo(() => {
     return window.innerWidth < 600;
@@ -65,8 +71,10 @@ const ProjectBoard = () => {
     const selectCoppiedObject = tasks[prevColumnName];
 
     if (prevColumnName !== columnName) {
-      const deleteSelectList = selectCoppiedObject.filter((el:itemProps) => el.id !== currentItem.id);
-      const selectList = selectCoppiedObject.filter((el:itemProps) => el.id === currentItem.id)[0];
+      const deleteSelectList = selectCoppiedObject
+        .filter((el:itemProps) => el.id !== currentItem.id);
+      const selectList = selectCoppiedObject
+        .filter((el:itemProps) => el.id === currentItem.id)[0];
 
       coppiedObject[columnName] = [...coppiedObject[columnName], selectList]
       coppiedObject[prevColumnName] = [...deleteSelectList];
@@ -75,18 +83,73 @@ const ProjectBoard = () => {
     setTasks(coppiedObject);
   }, [tasks]);
 
+  const onChange = useCallback((e) => {
+    const { name, value } = e.target
+    setFormValues({
+      ...formValues,
+      [name]: value.replaceAll("<br>", "\r\n")
+    });
+  }, [formValues]);
+  
+  const onUpload = useCallback((e) => {
+    e.preventDefault();
+
+    idRef.current += 1;
+
+    const temp = { ...formValues };
+    temp.id = idRef.current;
+
+    if (onValidate()) {
+      setTasks({
+        ...tasks,
+        [TODO]: [...tasks[TODO], temp]
+      });
+      onReset();
+    } 
+  }, [formValues]);
+
+  const onRemove = (id: number, columnName: string) => {
+    setTasks({
+      ...tasks,
+      [columnName]: tasks[columnName].filter((el: CurrentItem) => el.id !== id)
+    })
+  }
+
+  const onReset = useCallback(() => {
+    setFormValues({
+      ...formValues,
+      title: "",
+      desc: "",
+    })
+    setIsOpenUploadMenu(false);
+  }, []);
+
+  const onValidate = useCallback(() => {
+    const { title, desc } = formValues;
+    if (!title.length) {
+      alert("타이틀을 작성해주세요");
+      return false;
+    } else if (!desc.length) {
+      alert("설명을 작성해주세요");
+      return false;
+    }
+    return true;
+  }, [formValues]);
+
   const returnItemsForColumn = useCallback((columnName: string) => {
     if (tasks[columnName]) {
       return (
         tasks[columnName].map((item: itemProps, index: number) => (
-          <MovableItem 
+          <MovableItem
             key={item.id}
             id={item.id}
-            value={item.value} 
+            title={item.title}
+            desc={item.desc} 
             index={index}
+            columnName={columnName}
             changeItemColumn={changeItemColumn}
             moveCardHandler={moveCardHandler}
-            columnName={columnName}
+            onRemove={onRemove}
           />
         ))
       );
@@ -106,6 +169,15 @@ const ProjectBoard = () => {
           <Column title={DONE} length={tasks[DONE].length}>
             {returnItemsForColumn(DONE)}
           </Column>
+
+          <InsertButton onClick={() => setIsOpenUploadMenu(true)} />
+          <UploadMenu 
+            formValues={formValues}
+            isOpenUploadMenu={isOpenUploadMenu} 
+            onCancel={() => setIsOpenUploadMenu(false)}
+            onChange={onChange}
+            onUpload={onUpload}
+          />
         </InnerContainer>
       </DndProvider>
     </>

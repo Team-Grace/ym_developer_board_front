@@ -1,11 +1,13 @@
 import React, { useMemo, useRef, useState } from "react";
 import { COLUMN_NAMES } from 'utils/Item';
 import { useDrag, useDrop } from 'react-dnd';
-import { MovableContainter } from './style';
+import { MovableContainter, ItemContentContainer } from './style';
 import { CurrentItem, DropResult } from 'types/projectBoard/projectBoard';
+import { FiDelete } from "react-icons/fi";
 
 interface Props {
-  value: string;
+  title: string;
+  desc: string;
   id: number;
   index: number;
   columnName: string;
@@ -20,9 +22,19 @@ interface Props {
     dragIndex: number, 
     hoverIndex: number
   ) => void;
+  onRemove: (id:number, columnName:string) => void;
 }
 
-const MovableItem = ({ value, id, index, columnName, changeItemColumn, moveCardHandler }: Props) => {
+const MovableItem = ({ 
+  title,
+  desc,
+  id, 
+  index, 
+  columnName, 
+  changeItemColumn, 
+  moveCardHandler,
+  onRemove,
+}: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [, drop] = useDrop({
     accept: 'Box',
@@ -54,7 +66,7 @@ const MovableItem = ({ value, id, index, columnName, changeItemColumn, moveCardH
 
   const [{ isDragging }, drag] = useDrag({
     type: 'Box',
-    item: { index, value, id, type: 'Box' },
+    item: { index, id, type: 'Box' },
     end: (item, monitor) => {
       const dropResult: null | DropResult = monitor.getDropResult();
       if (dropResult) {
@@ -89,7 +101,15 @@ const MovableItem = ({ value, id, index, columnName, changeItemColumn, moveCardH
 
   return (
     <MovableContainter ref={ref} style={{opacity}}>
-      {value}
+      <ItemContentContainer>
+        <div className="title-container">
+          <h5>{title}</h5>
+          <button onClick={() => onRemove(id, columnName)}><FiDelete /></button>
+        </div>
+        <div className="desc-container">
+          <p>{desc}</p>
+        </div>
+      </ItemContentContainer>
     </MovableContainter>
   );
 };
