@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import { COLUMN_NAMES } from 'utils/Item';
+import { COLUMN_NAMES } from 'constant/projectBoard';
 import { useDrag, useDrop } from 'react-dnd';
 import { MovableContainter, ItemContentContainer } from './style';
 import { CurrentItem, DropResult } from 'types/projectBoard/projectBoard';
