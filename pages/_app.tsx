@@ -17,6 +17,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 const makestore = () => store;
-const wrapper = createWrapper(makestore);
+const wrapper = createWrapper(makestore , {
+  debug: process.env.NODE_ENV !== 'production'
+});
 
 export default wrapper.withRedux(MyApp);
