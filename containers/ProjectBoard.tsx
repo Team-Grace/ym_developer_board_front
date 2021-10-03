@@ -5,10 +5,10 @@ import _ from 'lodash';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { COLUMN_NAMES } from 'utils/Item';
+import { COLUMN_NAMES } from 'constant/projectBoard';
 import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
 import { InnerContainer } from 'styles/_common';
-import InsertButton from 'components/InsertButton';
+import UploadButton from 'components/UploadButton';
 import UploadMenu from 'components/ProjectBoard/UploadMenu';
 
 const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
@@ -170,7 +170,7 @@ const ProjectBoard = () => {
             {returnItemsForColumn(DONE)}
           </Column>
 
-          <InsertButton onClick={() => setIsOpenUploadMenu(true)} />
+          <UploadButton onClick={() => setIsOpenUploadMenu(true)} />
           <UploadMenu 
             formValues={formValues}
             isOpenUploadMenu={isOpenUploadMenu} 
