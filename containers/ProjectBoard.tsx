@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState, useRef} from 'react';
+import React, {useCallback, useMemo, useState, useRef, useEffect} from 'react';
 import Column from 'components/ProjectBoard/Column';
 import MovableItem from 'components/ProjectBoard/MovableItem';
 import _ from 'lodash';
@@ -10,25 +10,23 @@ import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
 import { InnerContainer } from 'styles/_common';
 import UploadButton from 'components/UploadButton';
 import UploadMenu from 'components/ProjectBoard/UploadMenu';
+import { useDispatch, useSelector } from 'react-redux';
+import { uploadTodo, removeTodo, orderMoveItem, changeColumnItem } from 'redux/projectBoard';
+import { RootState } from 'redux/store';
 
 const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
 
 const ProjectBoard = () => {
   const [isOpenUploadMenu, setIsOpenUploadMenu] = useState(false);
-  const [tasks, setTasks] = useState<any>({
-    [TODO]: [
-      {id: 1, title: '예제 타이틀', desc: '예제 설명입니다.'},
-    ],
-    [IN_PROGRESS]: [],
-    [DONE]: []
-  });
+  const prjectBoard = useSelector((state:RootState) => state.projectBoard);
   const [formValues, setFormValues] = useState({
-    id: 1,
+    id: 0,
     title: "",
     desc: "",
   });
 
-  const idRef = useRef(1);
+  const idRef = useRef(0);
+  const dispatch = useDispatch();
 
   const isMobile = useMemo(() => {
     return window.innerWidth < 600;
@@ -40,13 +38,13 @@ const ProjectBoard = () => {
     dragIndex: number, 
     hoverIndex: number
   ) => {
-    const dragItem = tasks[columnName][dragIndex];
-    const selectCoppiedObject = tasks[columnName];
+    const dragItem = _.cloneDeep(prjectBoard[columnName][dragIndex]);
+    const selectCoppiedObject = _.cloneDeep(prjectBoard[columnName]);
 
     let prevSelectKey = "";
 
-    Object.keys(tasks).forEach(key => {
-      tasks[key].forEach((el: itemProps) => {
+    Object.keys(prjectBoard).forEach(key => {
+      prjectBoard[key].forEach((el: itemProps) => {
         el.id === currentItem.id && (prevSelectKey = key);
       });
     });
@@ -55,20 +53,20 @@ const ProjectBoard = () => {
       const prevItem = selectCoppiedObject.splice(hoverIndex, 1, dragItem);
       selectCoppiedObject.splice(dragIndex, 1, prevItem[0]);
 
-      setTasks({
-        ...tasks,
-        [columnName]: selectCoppiedObject
-      });
+      dispatch(orderMoveItem({
+        columnName,
+        selectObject :selectCoppiedObject,
+      }));
     }
-  }, [tasks]);
+  }, [prjectBoard, dispatch]);
 
   const changeItemColumn = useCallback((
     currentItem: CurrentItem, 
     prevColumnName: string, 
     columnName: string
   ) => {
-    const coppiedObject = _.cloneDeep(tasks);
-    const selectCoppiedObject = tasks[prevColumnName];
+    const coppiedObject = _.cloneDeep(prjectBoard);
+    const selectCoppiedObject = coppiedObject[prevColumnName];
 
     if (prevColumnName !== columnName) {
       const deleteSelectList = selectCoppiedObject
@@ -78,10 +76,12 @@ const ProjectBoard = () => {
 
       coppiedObject[columnName] = [...coppiedObject[columnName], selectList]
       coppiedObject[prevColumnName] = [...deleteSelectList];
-    };
 
-    setTasks(coppiedObject);
-  }, [tasks]);
+      console.log(coppiedObject);
+
+      dispatch(changeColumnItem(coppiedObject));
+    };
+  }, [prjectBoard, dispatch]);
 
   const onChange = useCallback((e) => {
     const { name, value } = e.target
@@ -100,20 +100,14 @@ const ProjectBoard = () => {
     temp.id = idRef.current;
 
     if (onValidate()) {
-      setTasks({
-        ...tasks,
-        [TODO]: [...tasks[TODO], temp]
-      });
       onReset();
+      dispatch(uploadTodo(temp));
     } 
-  }, [formValues]);
+  }, [formValues, dispatch]);
 
-  const onRemove = (id: number, columnName: string) => {
-    setTasks({
-      ...tasks,
-      [columnName]: tasks[columnName].filter((el: CurrentItem) => el.id !== id)
-    })
-  }
+  const onRemove = useCallback((id: number, columnName: string) => {
+    dispatch(removeTodo({ id, columnName }));
+  }, [dispatch]);
 
   const onReset = useCallback(() => {
     setFormValues({
@@ -122,7 +116,7 @@ const ProjectBoard = () => {
       desc: "",
     })
     setIsOpenUploadMenu(false);
-  }, []);
+  }, [formValues]);
 
   const onValidate = useCallback(() => {
     const { title, desc } = formValues;
@@ -137,9 +131,9 @@ const ProjectBoard = () => {
   }, [formValues]);
 
   const returnItemsForColumn = useCallback((columnName: string) => {
-    if (tasks[columnName]) {
+    if (prjectBoard[columnName]) {
       return (
-        tasks[columnName].map((item: itemProps, index: number) => (
+        prjectBoard[columnName].map((item: itemProps, index: number) => (
           <MovableItem
             key={item.id}
             id={item.id}
@@ -154,19 +148,19 @@ const ProjectBoard = () => {
         ))
       );
     }
-  }, [tasks]);
+  }, [prjectBoard]);
 
   return (
     <>
       <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
         <InnerContainer>
-          <Column title={TODO} length={tasks[TODO].length}>
+          <Column title={TODO} length={prjectBoard[TODO].length}>
             {returnItemsForColumn(TODO)}
           </Column>
-          <Column title={IN_PROGRESS} length={tasks[IN_PROGRESS].length}>
+          <Column title={IN_PROGRESS} length={prjectBoard[IN_PROGRESS].length}>
             {returnItemsForColumn(IN_PROGRESS)}
           </Column>
-          <Column title={DONE} length={tasks[DONE].length}>
+          <Column title={DONE} length={prjectBoard[DONE].length}>
             {returnItemsForColumn(DONE)}
           </Column>
 

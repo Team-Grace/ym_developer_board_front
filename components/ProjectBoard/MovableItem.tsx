@@ -39,7 +39,6 @@ const MovableItem = ({
   const [, drop] = useDrop({
     accept: 'Box',
     hover(item:any, monitor:any) {
-
       const dragIndex = item.index;
       const hoverIndex = index;
 
