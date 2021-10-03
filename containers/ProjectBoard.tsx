@@ -1,38 +1,30 @@
-import React, {useCallback, useMemo, useState, useRef} from 'react';
+import React, {useCallback, useMemo, useState, useRef, useEffect} from 'react';
 import Column from 'components/ProjectBoard/Column';
 import MovableItem from 'components/ProjectBoard/MovableItem';
 import _ from 'lodash';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { COLUMN_NAMES } from 'utils/Item';
+import { COLUMN_NAMES } from 'constant/projectBoard';
 import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
 import { InnerContainer } from 'styles/_common';
-import InsertButton from 'components/InsertButton';
+import UploadButton from 'components/UploadButton';
 import UploadMenu from 'components/ProjectBoard/UploadMenu';
+import { useDispatch, useSelector } from 'react-redux';
+import projectBoard, { uploadTodo, removeTodo, orderMoveItem, changeColumnItem } from 'redux/projectBoard';
+import { RootState } from 'redux/store';
 
 const { TODO, IN_PROGRESS, DONE} = COLUMN_NAMES;
 
 const ProjectBoard = () => {
+  const tasks = useSelector((state:RootState) => state.projectBoard);
   const [isOpenUploadMenu, setIsOpenUploadMenu] = useState(false);
-  const [tasks, setTasks] = useState<any>({
-    [TODO]: [
-      {id: 1, title: '예제 타이틀', desc: '예제 설명입니다.'},
-    ],
-    [IN_PROGRESS]: [],
-    [DONE]: []
-  });
   const [formValues, setFormValues] = useState({
-    id: 1,
+    id: 0,
     title: "",
     desc: "",
   });
-
-  const idRef = useRef(1);
-
-  const isMobile = useMemo(() => {
-    return window.innerWidth < 600;
-  }, [])
+  const dispatch = useDispatch();
 
   const moveCardHandler = useCallback((
     currentItem:CurrentItem, 
@@ -40,8 +32,8 @@ const ProjectBoard = () => {
     dragIndex: number, 
     hoverIndex: number
   ) => {
-    const dragItem = tasks[columnName][dragIndex];
-    const selectCoppiedObject = tasks[columnName];
+    const dragItem = _.cloneDeep(tasks[columnName][dragIndex]);
+    const selectCoppiedObject = _.cloneDeep(tasks[columnName]);
 
     let prevSelectKey = "";
 
@@ -55,12 +47,12 @@ const ProjectBoard = () => {
       const prevItem = selectCoppiedObject.splice(hoverIndex, 1, dragItem);
       selectCoppiedObject.splice(dragIndex, 1, prevItem[0]);
 
-      setTasks({
-        ...tasks,
-        [columnName]: selectCoppiedObject
-      });
+      dispatch(orderMoveItem({
+        columnName,
+        selectObject :selectCoppiedObject,
+      }));
     }
-  }, [tasks]);
+  }, [tasks, dispatch]);
 
   const changeItemColumn = useCallback((
     currentItem: CurrentItem, 
@@ -68,7 +60,7 @@ const ProjectBoard = () => {
     columnName: string
   ) => {
     const coppiedObject = _.cloneDeep(tasks);
-    const selectCoppiedObject = tasks[prevColumnName];
+    const selectCoppiedObject = coppiedObject[prevColumnName];
 
     if (prevColumnName !== columnName) {
       const deleteSelectList = selectCoppiedObject
@@ -78,10 +70,10 @@ const ProjectBoard = () => {
 
       coppiedObject[columnName] = [...coppiedObject[columnName], selectList]
       coppiedObject[prevColumnName] = [...deleteSelectList];
-    };
 
-    setTasks(coppiedObject);
-  }, [tasks]);
+      dispatch(changeColumnItem(coppiedObject));
+    };
+  }, [tasks, dispatch]);
 
   const onChange = useCallback((e) => {
     const { name, value } = e.target
@@ -94,26 +86,22 @@ const ProjectBoard = () => {
   const onUpload = useCallback((e) => {
     e.preventDefault();
 
-    idRef.current += 1;
-
     const temp = { ...formValues };
-    temp.id = idRef.current;
+
+    const allList = Object.keys(tasks).map(key => tasks[key]).flat().map(el => el.id);
+    const maxNum = allList.length > 0 ? Math.max(...allList) + 1 : 1;
+
+    temp.id = maxNum;
 
     if (onValidate()) {
-      setTasks({
-        ...tasks,
-        [TODO]: [...tasks[TODO], temp]
-      });
       onReset();
+      dispatch(uploadTodo(temp));
     } 
-  }, [formValues]);
+  }, [formValues, dispatch]);
 
-  const onRemove = (id: number, columnName: string) => {
-    setTasks({
-      ...tasks,
-      [columnName]: tasks[columnName].filter((el: CurrentItem) => el.id !== id)
-    })
-  }
+  const onRemove = useCallback((id: number, columnName: string) => {
+    dispatch(removeTodo({ id, columnName }));
+  }, [dispatch]);
 
   const onReset = useCallback(() => {
     setFormValues({
@@ -122,7 +110,7 @@ const ProjectBoard = () => {
       desc: "",
     })
     setIsOpenUploadMenu(false);
-  }, []);
+  }, [formValues]);
 
   const onValidate = useCallback(() => {
     const { title, desc } = formValues;
@@ -158,7 +146,7 @@ const ProjectBoard = () => {
 
   return (
     <>
-      <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+      <DndProvider backend={HTML5Backend}>
         <InnerContainer>
           <Column title={TODO} length={tasks[TODO].length}>
             {returnItemsForColumn(TODO)}
@@ -170,7 +158,7 @@ const ProjectBoard = () => {
             {returnItemsForColumn(DONE)}
           </Column>
 
-          <InsertButton onClick={() => setIsOpenUploadMenu(true)} />
+          <UploadButton onClick={() => setIsOpenUploadMenu(true)} />
           <UploadMenu 
             formValues={formValues}
             isOpenUploadMenu={isOpenUploadMenu} 

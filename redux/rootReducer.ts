@@ -1,7 +1,9 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import counterSlice  from "redux/counter/counter";
+import projectBoard from "redux/projectBoard";
 
 const rootReducer = combineReducers({
+  projectBoard,
   counterSlice,
 });
 

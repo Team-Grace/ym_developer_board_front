@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import { useDrop } from 'react-dnd';
-import { COLUMN_NAMES } from 'utils/Item';
 import { ColumnContainer, ColumnTitleContainer } from './style';
 
 interface Props {

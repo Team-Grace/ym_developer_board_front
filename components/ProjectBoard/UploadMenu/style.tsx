@@ -3,7 +3,7 @@ import { color } from 'config/colorSystem';
 
 export const MenuContainer = styled.div`
   position: absolute;
-  width: 28%;
+  width: 25%;
   height: 100%;
   right: 0;
   top: 0;
@@ -47,6 +47,8 @@ export const MenuContainer = styled.div`
   .todo-upload-btn {
     right: 20px;
   }
+
+  @media ( max-width: 768px ) {}
 `;
 
 export const InputContainer = styled.div`

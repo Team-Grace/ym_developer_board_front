@@ -21,7 +21,7 @@
       "pages/*":["pages/*"],
       "styles/*":["styles/*"],
       "redux/*":["redux/*"],
-      "utils/*":["utils/*"],
+      "constant/*":["constant/*"],
       "types/*":["types/*"],
     }
   },
