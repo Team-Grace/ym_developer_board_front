@@ -6,10 +6,12 @@ export const Container = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  width: 90%;
+  width: 85%;
   min-width: 1160px;
-  border: 1px solid ${color.gray[200]};
-  padding: 80px 120px;
+  padding: 100px 120px;
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 0 12px black;
 `;
 
 export const InnerContainer = styled.div`

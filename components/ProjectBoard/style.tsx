@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { color } from 'config/colorSystem';
 
 export const ColumnContainer = styled.div`
-  height: 700px;
   width: 300px;
   margin: 20px;
   border-radius: 10px;
@@ -11,19 +10,13 @@ export const ColumnContainer = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   background-color: ${color.gray[50]};
-  overflow-y: auto;
 `;
 
-export const MovableContainter = styled.div`
-  border-radius: 4px;
-  background-color: #fff;
-  min-height: 100px;
-  width: 90%;
-  margin: 0px auto;
-  margin-top: 20px;
-  box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
-  cursor: pointer;
-`  
+export const ColumnItemContainer = styled.div`
+  width: 100%;
+  height: 600px;
+  overflow: auto;
+`;
 
 export const ColumnTitleContainer = styled.div`
   display: flex;
@@ -50,9 +43,17 @@ export const ColumnTitleContainer = styled.div`
   }
 `;
 
+export const MovableContainter = styled.div`
+  border-radius: 4px;
+  background-color: #fff;
+  width: 90%;
+  margin: 15px auto;
+  box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+  cursor: pointer;
+`  
+
 export const ItemContentContainer = styled.div`
   width: 100%;
-  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -91,11 +92,6 @@ export const ItemContentContainer = styled.div`
 
   .desc-container {
     width: 100%;
-    height: 100%;
     padding: 10px;
-
-    p {
-      white-space:pre;
-    }
   }
 `;

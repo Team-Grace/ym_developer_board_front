@@ -8,7 +8,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { COLUMN_NAMES } from 'constant/projectBoard';
 import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
-import { InnerContainer } from 'styles/_common';
+import { InnerContainer } from 'styles/common';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadTodo, removeTodo, orderMoveItem, changeColumnItem } from 'redux/projectBoard';
 import { RootState } from 'redux/store';
@@ -122,6 +122,8 @@ const ProjectBoard = () => {
     }
     return true;
   }, [formValues]);
+
+  console.log(formValues);
 
   const returnItemsForColumn = useCallback((columnName: string) => {
     if (tasks[columnName]) {

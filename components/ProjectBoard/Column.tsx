@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useDrop } from 'react-dnd';
-import { ColumnContainer, ColumnTitleContainer } from './style';
+import { ColumnContainer, ColumnTitleContainer, ColumnItemContainer } from './style';
 
 interface Props {
   children: React.ReactNode;
@@ -31,7 +31,9 @@ const Column = ({ children, title, length}: Props) => {
         <p>{length}</p>
         <h5>{title}</h5>
       </ColumnTitleContainer>
+      <ColumnItemContainer>
       {children}
+      </ColumnItemContainer>
     </ColumnContainer>
   );
 }

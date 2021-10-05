@@ -106,7 +106,7 @@ const MovableItem = ({
           <button onClick={() => onRemove(id, columnName)}><FiDelete /></button>
         </div>
         <div className="desc-container">
-          <p>{desc}</p>
+          <p dangerouslySetInnerHTML={{__html: desc.replace(/\n/gi, "</br>")}}></p>
         </div>
       </ItemContentContainer>
     </MovableContainter>

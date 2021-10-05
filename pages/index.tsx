@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import type { NextPage } from 'next'
-import { Container } from 'styles/_common';
+import { Container } from 'styles/common';
 
 const Home: NextPage = () => {
   // useEffect(() => {

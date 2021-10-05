@@ -70,7 +70,7 @@ export const InputContainer = styled.div`
 
   textarea {
     width: 90%;
-    height: 150px;
+    height: 140px;
     margin: 0 auto;
     outline: none;
     border: 1px solid ${color.gray[300]};
