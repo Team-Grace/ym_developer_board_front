@@ -4,9 +4,9 @@ import { Container } from 'styles/common';
 
 const projectBoard = () => {
   return (
-    <Container>
+    <>
       <ProjectBoard />
-    </Container>
+    </>
   );
 };
 

@@ -4,13 +4,18 @@ import store from 'redux/store';
 import { createWrapper } from "next-redux-wrapper";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
+import MenuNav from 'components/MenuNav';
+import { Container } from 'styles/common';
 
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={store.__PERSISTOR}>
-        <Component {...pageProps} />
+        <Container>
+          <MenuNav />
+          <Component {...pageProps} />
+        </Container>
       </PersistGate>
     </Provider>
   );

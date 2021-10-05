@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import type { NextPage } from 'next'
 import { Container } from 'styles/common';
+import MenuNav from 'components/MenuNav';
 
 const Home: NextPage = () => {
   // useEffect(() => {
@@ -11,9 +12,8 @@ const Home: NextPage = () => {
   // }, []);
   
   return (
-    <Container>
-    </Container>
-  )
+    <></>
+  );
 }
 
 export default Home
