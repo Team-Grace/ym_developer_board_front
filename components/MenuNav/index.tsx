@@ -31,19 +31,17 @@ const MenuNav = () => {
         <FiMenu />
       </NavButton>
 
-      {MENU_LISTS.map((item, idx) => {
-        return (
-          <>
-            <NavItem
-              key={idx}
-              type={item.type}
-              url={item.url}
-              isShowNav={isShowNav}
-              onClick={() => setIsShowNav(false)}
-            />
-          </>
-        )
-      })}
+      {MENU_LISTS.map((item, idx) => (
+        <>
+          <NavItem
+            key={idx}
+            type={item.type}
+            url={item.url}
+            isShowNav={isShowNav}
+            onClick={() => setIsShowNav(false)}
+          />
+        </>
+      ))}
     </NavContainer>
   );
 };

@@ -49,7 +49,7 @@ export const NavButton = styled.button`
     transition: all .2s;
 
     &.user:hover::after {
-      content: "프로필";
+      content: "메인";
       position: absolute;
       bottom: 50%;
       left: 60px;
@@ -64,8 +64,6 @@ export const NavButton = styled.button`
     &.projectBoard:hover::after {
       content: "투두보드";
       position: absolute;
-      /* bottom: -30px;
-      left: -2px; */
       bottom: 50%;
       left: 60px;
       transform: translateY(50%);

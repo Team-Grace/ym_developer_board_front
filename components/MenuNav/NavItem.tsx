@@ -9,6 +9,7 @@ interface Props {
   type: string;
   onClick: () => void;
 }
+
 const NavItem = ({ url, type, isShowNav, onClick }: Props) => {
   const Icons = useMemo(() => {
     if (type === 'user') return <FiUser />

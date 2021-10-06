@@ -10,6 +10,10 @@ export const ColumnContainer = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   background-color: ${color.gray[50]};
+
+  @media (max-width: 1600px) {
+    width: 250px;
+  }
 `;
 
 export const ColumnItemContainer = styled.div`

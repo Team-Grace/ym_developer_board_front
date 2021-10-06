@@ -123,8 +123,6 @@ const ProjectBoard = () => {
     return true;
   }, [formValues]);
 
-  console.log(formValues);
-
   const returnItemsForColumn = useCallback((columnName: string) => {
     if (tasks[columnName]) {
       return (
