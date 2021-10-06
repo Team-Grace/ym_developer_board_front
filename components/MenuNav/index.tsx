@@ -1,9 +1,26 @@
-import React, { useMemo, useState } from 'react';
-import { FiMenu, FiClipboard, FiCalendar } from "react-icons/fi";
+import React, { useState } from 'react';
+import { FiMenu } from "react-icons/fi";
 import { NavContainer, NavButton } from './style';
+import NavItem from './NavItem';
+
+
 
 const MenuNav = () => {
   const [isShowNav, setIsShowNav] = useState(false);
+  const MENU_LISTS = [
+    {
+      type: "user",
+      url: "/ssi02014"
+    },
+    {
+      type: "projectBoard",
+      url: "/projectBoard/ssi02014"
+    },
+    {
+      type: "calendar",
+      url: "/calendar/ssi02014"
+    },
+  ];
 
   return (
     <NavContainer>
@@ -13,16 +30,20 @@ const MenuNav = () => {
       >
         <FiMenu />
       </NavButton>
-      {isShowNav && (
-        <>
-          <NavButton className="menu1">
-            <FiClipboard />
-          </NavButton>
-          <NavButton className="menu2">
-            <FiCalendar />
-          </NavButton>
-        </>
-      )}
+
+      {MENU_LISTS.map((item, idx) => {
+        return (
+          <>
+            <NavItem
+              key={idx}
+              type={item.type}
+              url={item.url}
+              isShowNav={isShowNav}
+              onClick={() => setIsShowNav(false)}
+            />
+          </>
+        )
+      })}
     </NavContainer>
   );
 };
