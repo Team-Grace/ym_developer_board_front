@@ -76,12 +76,14 @@ export const DateContainer = styled.div`
 
 export const ContentContainer = styled.div`
   width: 100%;
-  height: 15%;
+  height: 16%;
   display: flex;
   justify-content: center;
 `;
 
 export const DateItem = styled.button`
+  display: flex;
+  justify-content: flex-start;
   border: none;
   outline: none;
   width: 14.3%;
@@ -89,6 +91,7 @@ export const DateItem = styled.button`
   font-size: 18px;
   background-color: #fff;
   cursor: pointer;
+  padding: 8px;
 
   &.today {}
   &.prev-dates {
