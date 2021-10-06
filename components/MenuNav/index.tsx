@@ -3,8 +3,6 @@ import { FiMenu } from "react-icons/fi";
 import { NavContainer, NavButton } from './style';
 import NavItem from './NavItem';
 
-
-
 const MenuNav = () => {
   const [isShowNav, setIsShowNav] = useState(false);
   const MENU_LISTS = [

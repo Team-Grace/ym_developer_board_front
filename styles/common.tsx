@@ -8,6 +8,7 @@ export const Container = styled.div`
   justify-content: center;
   width: 85%;
   min-width: 1160px;
+  height: 900px;
   padding: 100px 120px;
   background-color: #fff;
   border-radius: 7px;
