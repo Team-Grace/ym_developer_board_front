@@ -1,14 +1,14 @@
 import React, {useCallback, useMemo, useState, useRef, useEffect} from 'react';
 import Column from 'components/ProjectBoard/Column';
 import MovableItem from 'components/ProjectBoard/MovableItem';
+import UploadButton from 'components/UploadButton';
+import UploadMenu from 'components/ProjectBoard/UploadMenu';
 import _ from 'lodash';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { COLUMN_NAMES } from 'constant/projectBoard';
 import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
-import { InnerContainer } from 'styles/_common';
-import UploadButton from 'components/UploadButton';
-import UploadMenu from 'components/ProjectBoard/UploadMenu';
+import { InnerContainer } from 'styles/common';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadTodo, removeTodo, orderMoveItem, changeColumnItem } from 'redux/projectBoard';
 import { RootState } from 'redux/store';

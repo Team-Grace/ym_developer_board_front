@@ -3,7 +3,7 @@ import { color } from 'config/colorSystem';
 
 export const ButtonIcon = styled.button`
   position: absolute;
-  width: 3%;
+  width: 4%;
   height: 100%;
   right: 0;
   top: 0;
