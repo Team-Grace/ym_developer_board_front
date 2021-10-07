@@ -36,32 +36,25 @@ const Calendar = ({
               .add(index, 'day');
             const filter_schedule = schedule
               .filter(el => el.date === days.format('YYYYMMDD'));
+
+            let today = false;
+            let currentMonth = false;
             
             if (days.format('YYYYMMDD') === moment().format('YYYYMMDD')) {
-              return (
-                <DateItems
-                  today={true}
-                  currentMonth={true}
-                  key={index}
-                  schedule={filter_schedule}
-                  days={days}
-                />
-              );
+              today = true;
+              currentMonth = true;
             } else if (days.format('MM') !== getMoment.format('MM')) {
-              return (
-                <DateItems
-                  today={false}
-                  currentMonth={false}
-                  key={index}
-                  schedule={filter_schedule}
-                  days={days}
-                />
-              );
+              today = false;
+              currentMonth = false;
+            } else {
+              today = false;
+              currentMonth = true;
             }
+
             return(
               <DateItems
-                today={false}
-                currentMonth={true}
+                today={today}
+                currentMonth={currentMonth}
                 key={index}
                 schedule={filter_schedule}
                 days={days}
