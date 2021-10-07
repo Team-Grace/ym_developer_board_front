@@ -87,6 +87,19 @@ export const DateScheduleContainer = styled.div`
   width: 14.3%;
   height: 100%;
   position: relative;
+
+  .today {
+    position: absolute;
+    color: black;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: ${color.main[200]};
+    border-radius: 4px;
+    padding: 0 7px;
+    color: #fff;
+    font-size: 12px;
+  }
 `;
 
 export const ScheduleSpan = styled.span`
@@ -117,11 +130,10 @@ export const DateItem = styled.input`
   padding: 8px;
   text-align: center;
 
-  &.today {}
   &.prev-dates {
     color: #b4b4b4;
   }
   &.current-dates:hover {
-    background-color: #d4d4d4;
+    background-color: #e1edff;
   }
 `;

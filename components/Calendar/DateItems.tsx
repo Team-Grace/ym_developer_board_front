@@ -10,9 +10,10 @@ interface Props {
   schedule: ScheduleProps[];
   days: moment.Moment;
   currentMonth: boolean;
+  today: boolean;
 }
 
-const DateItems = ({ schedule, days, currentMonth }: Props) => {
+const DateItems = ({ schedule, days, currentMonth, today }: Props) => {
   return (
     <>
       <DateScheduleContainer>
@@ -21,6 +22,9 @@ const DateItems = ({ schedule, days, currentMonth }: Props) => {
           value={days.format('D')}
           readOnly
         />
+        {today && (
+          <p className="today">Today</p>
+        )}
         {schedule && schedule.map((el, idx) => {
           return <ScheduleSpan key={idx}>{el.value}</ScheduleSpan>
         })}
