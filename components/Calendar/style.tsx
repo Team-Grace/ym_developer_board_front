@@ -70,8 +70,10 @@ export const DayOfWeekContainer = styled.div`
 `;
 
 export const DateContainer = styled.div`
+  position: relative;
   width: 100%;
   height: 550px;
+
 `;
 
 export const ContentContainer = styled.div`
@@ -81,17 +83,39 @@ export const ContentContainer = styled.div`
   justify-content: center;
 `;
 
-export const DateItem = styled.button`
+export const DateScheduleContainer = styled.div`
+  width: 14.3%;
+  height: 100%;
+  position: relative;
+`;
+
+export const ScheduleSpan = styled.span`
+  font-size: 12px;
+  background-color: ${color.main[500]};
+  color: #fff;
+  padding: 2px;
+  border-radius: 4px;
+  position: absolute;
+  right: 5px;
+  width: 90%;
+  bottom: 5px;
+  text-align: center;
+`;
+
+export const DateItem = styled.input`
   display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
   border: none;
   outline: none;
-  width: 14.3%;
+  width: 100%;
+  height: 100%;
   color: black;
   font-size: 18px;
   background-color: #fff;
   cursor: pointer;
   padding: 8px;
+  text-align: center;
 
   &.today {}
   &.prev-dates {

@@ -3,46 +3,57 @@ import {
   CalendarContainer, 
   ContentContainer, 
   DateContainer, 
-  DateItem,
   DayOfWeekContainer,
   ControlContainer,
   ControlButtonContainer,
 } from './style'
 import moment from 'moment';
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
+import DateItems from './DateItems';
+import { CalendarProps } from "types/Calendar/Calendar";
 
-const Calendar = () => {
-  const [getMoment, setGetMoment] = useState(moment());
-  const firstWeek = getMoment.clone().startOf('month').week();
-  const lastWeek = getMoment.clone().endOf('month').week() === 1 ? 53 : getMoment.clone().endOf('month').week();
+const Calendar = ({
+  getMoment, 
+  firstWeek, 
+  lastWeek, 
+  schedule, 
+  setAddMoment, 
+  setSubMoment
+}: CalendarProps) => {
   const dayOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-
-  const DateItems = useMemo(() => {
+  const DateOutput = useMemo(() => {
     let result:React.ReactNode[] = [];
-    
+
     for (let i = firstWeek; i <= lastWeek; i++) {
       const element = (
         <ContentContainer key={i}>
-          {Array(7).fill(0).map((data, index) => {
-            let days = getMoment.clone().startOf('year').week(i).startOf('week').add(index, 'day');
+          {Array(7).fill(0).map((_, index) => {
+            const days = getMoment
+              .clone()
+              .startOf('year')
+              .week(i)
+              .startOf('week')
+              .add(index, 'day');
+            const filter_schedule = schedule
+              .filter(el => el.date === days.format('YYYYMMDD'));
 
-            if (moment().format('YYYYMMDD') === days.format('YYYYMMDD')) {
+            if (days.format('MM') !== getMoment.format('MM')) {
               return (
-                <DateItem key={index} className="today" >
-                  {days.format('D')}
-                </DateItem>
-              );
-            } else if (days.format('MM') !== getMoment.format('MM')) {
-              return (
-                <DateItem key={index} className="prev-dates" >
-                  {days.format('D')}
-                </DateItem>
+                <DateItems
+                  currentMonth={false}
+                  key={index}
+                  schedule={filter_schedule}
+                  days={days}
+                />
               );
             }
             return(
-              <DateItem key={index} className="current-dates">
-                {days.format('D')}
-              </DateItem>
+              <DateItems
+                currentMonth={true}
+                key={index}
+                schedule={filter_schedule}
+                days={days}
+              />
             );
           })}
         </ContentContainer>
@@ -57,24 +68,22 @@ const Calendar = () => {
       <ControlContainer>
         <span>{getMoment.format('YYYY년 MM월')}</span>
         <ControlButtonContainer>
-          <button onClick={()=>{ setGetMoment(getMoment.clone().subtract(1, 'month')) }}>
+          <button onClick={setSubMoment}>
             <MdKeyboardArrowUp />
           </button>
-          <button onClick={()=>{ setGetMoment(getMoment.clone().add(1, 'month')) }}>
+          <button onClick={setAddMoment}>
             <MdKeyboardArrowDown />
           </button>
         </ControlButtonContainer>
       </ControlContainer>
       <DayOfWeekContainer>
-        {dayOfWeek.map((el, idx) => (
-          <p key={idx}>{el}</p>
-        ))}
+        {dayOfWeek.map((el, idx) => <p key={idx}>{el}</p>)}
       </DayOfWeekContainer>
       <DateContainer>
-        {DateItems}
+        {DateOutput}
       </DateContainer>
     </CalendarContainer>
   )
 };
 
-export default Calendar;
+export default React.memo(Calendar);

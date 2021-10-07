@@ -30,15 +30,14 @@ const MenuNav = () => {
       </NavButton>
 
       {MENU_LISTS.map((item, idx) => (
-        <>
+        <div key={idx}>
           <NavItem
-            key={idx}
             type={item.type}
             url={item.url}
             isShowNav={isShowNav}
             onClick={() => setIsShowNav(false)}
           />
-        </>
+        </div>
       ))}
     </NavContainer>
   );
