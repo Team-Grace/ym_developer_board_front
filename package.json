@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.8",
     "@reduxjs/toolkit": "^1.6.1",
     "@types/styled-components": "^5.1.14",
     "next": "11.1.2",
