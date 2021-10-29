@@ -26,8 +26,8 @@ export const HeaderContainer = styled.div`
     margin-right: 30px;
     background-color: #fff;
     outline: none;
-    color: #011d49;
-    border: 1px solid #011d49;
+    color: ${color.main[500]};
+    border: 1px solid ${color.main[500]};
     font-size: 14px;
     padding: 7px 20px;
     border-radius: 6px;
@@ -71,4 +71,24 @@ export const ContentContainer = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
+`;
+
+export const NavItemContainer = styled.a`
+  width: 100%;
+
+  a {
+    padding: 20px;
+    text-decoration: none;
+    display: flex;
+    color: #111;
+
+    &:hover {
+      background-color: #0d203f;
+      color: #fff;
+    }
+  }
+
+  p {
+    margin-left: 10px;
+  }
 `;
