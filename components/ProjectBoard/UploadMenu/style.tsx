@@ -3,13 +3,14 @@ import { color } from 'config/colorSystem';
 
 export const MenuContainer = styled.div`
   position: absolute;
-  width: 25%;
+  width: 23%;
+  min-width: 300px;
   height: 100%;
   right: 0;
   top: 0;
   background-color: ${color.main[500]};
   transition: all .3s;
-  padding: 100px 20px 50px 20px;
+  padding: 180px 20px 50px 20px;
 
   &.active {
     opacity: 1;
@@ -17,7 +18,7 @@ export const MenuContainer = styled.div`
   }
   &.in-active {
     opacity: 0.4;
-    transform: translateX(100%);
+    transform: translateX(150%);
   }
 
   button {
@@ -37,7 +38,7 @@ export const MenuContainer = styled.div`
   }
 
   .menu-close-btn {
-    top: 5px;
+    top: 85px;
     right: 20px;
     width: 40px;
     height: 40px;

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
 html,
 body {
   padding: 0;
@@ -10,15 +12,6 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-#__next {
-  width: 100%;
-  padding: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #002869;
 }
 
 @keyframes fadeInSlideRight {

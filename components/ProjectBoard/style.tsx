@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { color } from 'config/colorSystem';
 
 export const ColumnContainer = styled.div`
-  width: 300px;
-  margin: 20px;
+  min-width: 300px;
+  margin: 0 40px;
   border-radius: 10px;
   box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
   display: flex;
