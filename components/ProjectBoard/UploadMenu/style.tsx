@@ -18,7 +18,7 @@ export const MenuContainer = styled.div`
   }
   &.in-active {
     opacity: 0.4;
-    transform: translateX(100%);
+    transform: translateX(150%);
   }
 
   button {
