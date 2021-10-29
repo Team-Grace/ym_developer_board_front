@@ -18,20 +18,21 @@ export const HeaderContainer = styled.div`
     font-family: 'Luckiest Guy', cursive;
     font-size: 32px;
     color: #011d49;
-    margin-left: 30px;
+    margin-left: 50px;
     padding-top: 8px;
+    cursor: pointer;
   }
 
-  button {
-    margin-right: 30px;
+  a {
+    margin-right: 50px;
     background-color: #fff;
     outline: none;
     color: ${color.main[500]};
     border: 1px solid ${color.main[500]};
     font-size: 14px;
-    padding: 7px 20px;
-    border-radius: 6px;
-    cursor: pointer;
+    padding: 10px 30px;
+    border-radius: 4px;
+    text-decoration: none;
 
     &:hover {
       background-color: #ecf2fd;
@@ -82,7 +83,7 @@ export const NavItemContainer = styled.div`
     text-decoration: none;
     display: flex;
     color: #111;
-    transition: color .3s;
+    transition: color .4s;
 
     &::before {
       content: "";
@@ -93,7 +94,7 @@ export const NavItemContainer = styled.div`
       top: 0;
       left: 0;
       z-index: -1;
-      transition: all .3s;
+      transition: all .4s;
     }
 
     &:hover {
