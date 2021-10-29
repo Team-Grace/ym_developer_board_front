@@ -13,6 +13,30 @@ export const HeaderContainer = styled.div`
   z-index: 100;
   background-color: #fff;
   box-shadow: 0 0 4px #a5a5a5;
+
+  h5 {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 32px;
+    color: #011d49;
+    margin-left: 30px;
+    padding-top: 8px;
+  }
+
+  button {
+    margin-right: 30px;
+    background-color: #fff;
+    outline: none;
+    color: #011d49;
+    border: 1px solid #011d49;
+    font-size: 14px;
+    padding: 7px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ecf2fd;
+    }
+  }
 `
 
 export const NavContainer = styled.div`
