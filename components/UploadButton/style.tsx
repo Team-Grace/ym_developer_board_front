@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { color } from 'config/colorSystem';
 
 export const ButtonIcon = styled.button`
-  position: absolute;
-  width: 4%;
+  position: fixed;
+  width: 50px;
   height: 100%;
   right: 0;
   top: 0;
@@ -17,7 +17,7 @@ export const ButtonIcon = styled.button`
 
   &:hover {
     opacity: 0.8;
-    width: 6%;
+    width: 70px;
   }
 
   svg {

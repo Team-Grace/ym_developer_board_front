@@ -13,12 +13,12 @@ body {
 }
 
 #__next {
-  width: 100%;
-  padding: 50px;
-  display: flex;
+  /* width: 100%; */
+  /* padding: 50px; */
+  /* display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: #002869;
+  align-items: center; */
+  /* background-color: #002869; */
 }
 
 @keyframes fadeInSlideRight {

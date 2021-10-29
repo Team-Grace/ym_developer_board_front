@@ -4,6 +4,7 @@ import PageTitle from 'components/PageTitle';
 import moment from 'moment';
 import { InnerContainer } from 'styles/common';
 import UploadButton from 'components/UploadButton';
+import DrawerLayout from 'components/DrawerLayout';
 
 const projectBoard = () => {
   const [getMoment, setGetMoment] = useState(moment());
@@ -23,7 +24,7 @@ const projectBoard = () => {
     },
   ];
   return (
-    <>
+    <DrawerLayout>
       <PageTitle title="Calendar" />
       <InnerContainer>
         <Calendar 
@@ -36,7 +37,7 @@ const projectBoard = () => {
         />
         <UploadButton onClick={() => setIsOpenUploadMenu(true)} />
       </InnerContainer>
-    </>
+    </DrawerLayout>
   );
 };
 

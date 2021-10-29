@@ -3,6 +3,7 @@ import { color } from 'config/colorSystem';
 
 export const CalendarContainer = styled.div`
   width: 90%;
+  min-width: 1100px;
   height: 100%;
   display: flex;
   justify-content: flex-start;
@@ -11,6 +12,7 @@ export const CalendarContainer = styled.div`
   box-shadow: 2px 2px 6px #555555;
   border-radius: 4px;
   overflow: hidden;
+  background-color: #fff;
 `;
 
 export const ControlContainer = styled.div`
@@ -72,7 +74,7 @@ export const DayOfWeekContainer = styled.div`
 export const DateContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 550px;
+  height: 600px;
 
 `;
 

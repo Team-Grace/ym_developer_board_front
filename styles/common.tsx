@@ -16,6 +16,8 @@ export const Container = styled.div`
 `;
 
 export const InnerContainer = styled.div`
+  padding-top: 40px;
+  min-width: 1200px;
   width: 100%;
   height: 100%;
   display: flex;

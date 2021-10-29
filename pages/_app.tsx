@@ -12,10 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={store.__PERSISTOR}>
-        <Container>
-          <MenuNav />
-          <Component {...pageProps} />
-        </Container>
+        <Component {...pageProps} />
       </PersistGate>
     </Provider>
   );
