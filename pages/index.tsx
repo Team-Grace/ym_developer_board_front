@@ -15,7 +15,7 @@ const Home: NextPage = () => {
   
   useEffect(() => {
     if (login) Router.push(`/dashboard/${login}`);
-  }, [login])
+  }, [login]);
 
   return (
     <></>

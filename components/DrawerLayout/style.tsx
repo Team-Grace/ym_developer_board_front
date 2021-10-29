@@ -73,18 +73,34 @@ export const ContentContainer = styled.div`
   flex-direction: column;
 `;
 
-export const NavItemContainer = styled.a`
+export const NavItemContainer = styled.div`
   width: 100%;
 
   a {
+    position: relative;
     padding: 20px;
     text-decoration: none;
     display: flex;
     color: #111;
+    transition: color .3s;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 100%;
+      background-color: #0d203f;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      transition: all .3s;
+    }
 
     &:hover {
-      background-color: #0d203f;
       color: #fff;
+    }
+    &:hover::before {
+      width: 100%;
     }
   }
 
