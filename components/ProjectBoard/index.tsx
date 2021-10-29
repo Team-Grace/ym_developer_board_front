@@ -4,11 +4,8 @@ import MovableItem from 'components/ProjectBoard/MovableItem';
 import UploadButton from 'components/UploadButton';
 import UploadMenu from 'components/ProjectBoard/UploadMenu';
 import _ from 'lodash';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { COLUMN_NAMES } from 'constant/projectBoard';
 import { CurrentItem, itemProps } from 'types/projectBoard/projectBoard';
-import { InnerContainer } from 'styles/common';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadTodo, removeTodo, orderMoveItem, changeColumnItem } from 'redux/projectBoard';
 import { RootState } from 'redux/store';
@@ -145,28 +142,24 @@ const ProjectBoard = () => {
 
   return (
     <>
-      <DndProvider backend={HTML5Backend}>
-        <InnerContainer>
-          <Column title={TODO} length={tasks[TODO].length}>
-            {returnItemsForColumn(TODO)}
-          </Column>
-          <Column title={IN_PROGRESS} length={tasks[IN_PROGRESS].length}>
-            {returnItemsForColumn(IN_PROGRESS)}
-          </Column>
-          <Column title={DONE} length={tasks[DONE].length}>
-            {returnItemsForColumn(DONE)}
-          </Column>
+      <Column title={TODO} length={tasks[TODO].length}>
+        {returnItemsForColumn(TODO)}
+      </Column>
+      <Column title={IN_PROGRESS} length={tasks[IN_PROGRESS].length}>
+        {returnItemsForColumn(IN_PROGRESS)}
+      </Column>
+      <Column title={DONE} length={tasks[DONE].length}>
+        {returnItemsForColumn(DONE)}
+      </Column>
 
-          <UploadButton onClick={() => setIsOpenUploadMenu(true)} />
-          <UploadMenu 
-            formValues={formValues}
-            isOpenUploadMenu={isOpenUploadMenu} 
-            onCancel={() => setIsOpenUploadMenu(false)}
-            onChange={onChange}
-            onUpload={onUpload}
-          />
-        </InnerContainer>
-      </DndProvider>
+      <UploadButton onClick={() => setIsOpenUploadMenu(true)} />
+      <UploadMenu 
+        formValues={formValues}
+        isOpenUploadMenu={isOpenUploadMenu} 
+        onCancel={() => setIsOpenUploadMenu(false)}
+        onChange={onChange}
+        onUpload={onUpload}
+      />
     </>
   );
 };

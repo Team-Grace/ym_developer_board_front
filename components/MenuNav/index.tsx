@@ -3,8 +3,6 @@ import { FiMenu } from "react-icons/fi";
 import { NavContainer, NavButton } from './style';
 import NavItem from './NavItem';
 
-
-
 const MenuNav = () => {
   const [isShowNav, setIsShowNav] = useState(false);
   const MENU_LISTS = [
@@ -32,15 +30,14 @@ const MenuNav = () => {
       </NavButton>
 
       {MENU_LISTS.map((item, idx) => (
-        <>
+        <div key={idx}>
           <NavItem
-            key={idx}
             type={item.type}
             url={item.url}
             isShowNav={isShowNav}
             onClick={() => setIsShowNav(false)}
           />
-        </>
+        </div>
       ))}
     </NavContainer>
   );
