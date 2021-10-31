@@ -10,7 +10,7 @@ export const MenuContainer = styled.div`
   top: 0;
   background-color: ${color.main[500]};
   transition: all .3s;
-  padding: 180px 20px 50px 20px;
+  padding: 150px 20px 50px 20px;
 
   &.active {
     opacity: 1;
