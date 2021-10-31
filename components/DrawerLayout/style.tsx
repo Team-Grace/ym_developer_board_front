@@ -72,6 +72,7 @@ export const ContentContainer = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 export const NavItemContainer = styled.div`
