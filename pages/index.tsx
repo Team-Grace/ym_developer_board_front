@@ -28,6 +28,7 @@ const Home: NextPage = () => {
         icon: <BsCalendar></BsCalendar>,
         iconBgColor: "#a6c8ff",
         iconColor: "#000",
+        url: "/calendar/ssi02014"
       },
       {
         title: "코드",
@@ -35,6 +36,7 @@ const Home: NextPage = () => {
         icon: <BsCode></BsCode>,
         iconBgColor: "#47619e",
         iconColor: "#fff",
+        url: "/dashboard/ssi02014"
       },
       {
         title: "게시판",
@@ -42,6 +44,7 @@ const Home: NextPage = () => {
         icon: <BsClipboard></BsClipboard>,
         iconBgColor: "#47619e",
         iconColor: "#fff",
+        url: "/dashboard/ssi02014"
       },
       {
         title: "커뮤니티",
@@ -49,6 +52,7 @@ const Home: NextPage = () => {
         icon: <BsPersonFill></BsPersonFill>,
         iconBgColor: "#a6c8ff",
         iconColor: "#000",
+        url: "/dashboard/ssi02014"
       },
     ]
   }, []);

@@ -57,4 +57,12 @@ export const ContentContainer = styled.div`
   box-shadow: 0 0 4px #a5a5a5;
   display: flex;
   align-items: center;
+
+  p {
+  }
+  span {
+    display: block;
+    text-align: center;
+    font-size: 30px;
+  }
 `;
