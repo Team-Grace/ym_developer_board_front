@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage } from 'next'
+import Main from 'components/Main';
 
 const Home: NextPage = () => {
   useEffect(() => {
@@ -10,7 +11,9 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <></>
+    <>
+      <Main />
+    </>
   );
 }
 
