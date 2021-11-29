@@ -4,6 +4,14 @@ import { MainContainer } from 'styles/common';
 import MainTitle from 'components/Main/Title';
 import MainServiceBox from 'components/Main/ServiceBox';
 import { BsCalendar, BsCode, BsClipboard, BsPersonFill } from "react-icons/bs";
+import styled from 'styled-components';
+import MainLeftBox from 'components/Main/LeftBox';
+
+const ContentContainer = styled.div`
+  display: flex;
+  max-width: 1200px;
+  justify-content: center;
+`;
 
 const Home: NextPage = () => {
   useEffect(() => {
@@ -47,19 +55,13 @@ const Home: NextPage = () => {
 
   return (
     <>
-    <MainContainer>
-      <MainTitle>YMDB</MainTitle>
-      <div style={{ display: "flex", width: "1200px", justifyContent: "center"}}>
-        <div style={{ 
-          width: "350px", 
-          height: "580px", 
-          marginRight: "20px",
-          backgroundColor: "#0c2c63",
-          borderRadius: "20px",
-        }}></div>
-        <MainServiceBox contentList={contentList} />
-      </div>
-    </MainContainer>
+      <MainContainer>
+        <MainTitle />
+        <ContentContainer>
+          <MainLeftBox />
+          <MainServiceBox contentList={contentList} />
+        </ContentContainer>
+      </MainContainer>
     </>
   );
 }

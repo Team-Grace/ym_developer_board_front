@@ -55,3 +55,20 @@ body {
     transform: translateY(25%);
   }
 }
+
+@keyframes typing {
+  40% {
+    left: 100%;
+    margin: 0 -35px 0 0;
+  }
+
+  70% {
+    left: 100%;
+    margin: 0 -35px 0 0;
+  }
+
+  100% {
+    left: 0;
+    margin: 0 35px 0 -35px;
+  }
+}

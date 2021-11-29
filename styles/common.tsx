@@ -41,4 +41,5 @@ export const MainContainer = styled.div`
   align-items: center;
   flex-direction: column;
   background-color: ${color.main[500]};
+  overflow-x: hidden;
 `;

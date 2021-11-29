@@ -1,14 +1,20 @@
 import React from 'react';
-import {Title} from './style';
+import { Wrapper, Title, StaticText, DynamicText, MainDescription } from './style';
 
-interface Props {
-  children: React.ReactNode
-}
-const MainTitle = ({children}:Props) => {
+const MainTitle = () => {
   return (
-    <Title>
-      YMDB
-    </Title>
+    <Wrapper>
+      <Title>
+        <StaticText>YM.</StaticText> 
+        <DynamicText>
+          <span>DEVELOPER BOARD<i>&#128187;</i></span>
+        </DynamicText>
+        <br/>
+      </Title>
+      <MainDescription>
+        {/* Copyright &copy; */}
+      </MainDescription>
+    </Wrapper>
   );
 };
 
