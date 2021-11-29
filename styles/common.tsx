@@ -32,3 +32,13 @@ export const Dimmend = styled.div`
   bottom: 0;
   left: 0;
 `;
+
+export const MainContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: ${color.main[500]};
+`;
