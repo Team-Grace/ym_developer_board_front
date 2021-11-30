@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
-
 html,
 body {
   padding: 0;
@@ -12,6 +10,14 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul, li, ol {
+  list-style: none;
 }
 
 @keyframes fadeInSlideRight {
@@ -55,5 +61,22 @@ body {
   to {
     opacity: 0;
     transform: translateY(25%);
+  }
+}
+
+@keyframes typing {
+  40% {
+    left: 100%;
+    margin: 0 -35px 0 0;
+  }
+
+  70% {
+    left: 100%;
+    margin: 0 -35px 0 0;
+  }
+
+  100% {
+    left: 0;
+    margin: 0 35px 0 -35px;
   }
 }
