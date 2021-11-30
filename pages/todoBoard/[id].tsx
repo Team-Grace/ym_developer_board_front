@@ -6,7 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { InnerContainer } from 'styles/common';
 import DrawerLayout from 'components/DrawerLayout';
 
-const projectBoard = () => {
+const TodoBoard = () => {
   return (
     <DrawerLayout>
       <PageTitle title="ToDo Board" />
@@ -19,4 +19,4 @@ const projectBoard = () => {
   );
 };
 
-export default projectBoard;
+export default TodoBoard;

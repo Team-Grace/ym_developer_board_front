@@ -6,7 +6,7 @@ import { InnerContainer } from 'styles/common';
 import UploadButton from 'components/UploadButton';
 import DrawerLayout from 'components/DrawerLayout';
 
-const projectBoard = () => {
+const CalendarBoard = () => {
   const [getMoment, setGetMoment] = useState(moment());
   const [isOpenUploadMenu, setIsOpenUploadMenu] = useState(false);
   
@@ -41,4 +41,4 @@ const projectBoard = () => {
   );
 };
 
-export default projectBoard;
+export default CalendarBoard;
